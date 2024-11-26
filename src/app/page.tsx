@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { deleteCookie } from 'cookies-next/client';
+import { deleteCookie } from 'cookies-next';
 
 interface LoginStatus {
   status: string;
