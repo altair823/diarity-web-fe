@@ -30,4 +30,4 @@ jobs:
       # APP_NAME: diarity-be
       APP_PATH: ${{ vars.APP_PATH }}
       # APP_PATH: /home/ubuntu/diarity-be
-      NODE_ENV: develop
+      NODE_ENV: development
