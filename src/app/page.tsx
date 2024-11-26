@@ -2,8 +2,6 @@
 
 import { useEffect, useState } from 'react';
 
-import { deleteCookie } from 'cookies-next';
-
 interface LoginStatus {
   status: string;
   user: {
@@ -25,8 +23,10 @@ async function refresh () {
 
 async function logout () {
   // Delete cookies
-  deleteCookie("access_token");
-  deleteCookie("refresh_token");
+  await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/logout`, {
+    method: "POST",
+    credentials: "include",
+  });
   // Refresh page
   window.location.href = "/";
 }
