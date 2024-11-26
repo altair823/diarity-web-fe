@@ -55,6 +55,7 @@ jobs:
           docker buildx build \
             --push \
             -t altairharbor.duckdns.org/diarity-web-fe/${APP_NAME}:${NODE_ENV} \
+            --build-arg ENVIRONMENT=${NODE_ENV} \
             .
 
       - name: Deploy
@@ -75,9 +76,7 @@ jobs:
             docker run -d \
               --name $APP_NAME \
               -p 3000:3000 \
-              -v $APP_PATH/.secrets.$NODE_ENV:/usr/src/app/.secrets.$NODE_ENV \
               -v $APP_PATH/logs:/usr/src/app/logs \
-              -e NODE_ENV=$NODE_ENV \
               altairharbor.duckdns.org/$APP_NAME/$APP_NAME:$NODE_ENV
             docker image prune -f
           
