@@ -13,7 +13,7 @@ interface LoginStatus {
 }
 
 async function refresh () {
-  const response = await fetch("http://localhost:3000/auth/refresh", {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/refresh`, {
     method: "POST",
     credentials: "include",
   });
