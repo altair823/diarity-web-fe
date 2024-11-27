@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from 'react';
 
+import Image from 'next/image';
+import google_logo from '/public/google_logo.png';
+
 interface LoginStatus {
   status: string;
   user: {
@@ -44,7 +47,7 @@ function LoginButton (loginStatus: string) {
     handleLoginButton = Logout;
   } else {
     googleLogo = (
-      <img src="/g-logo.png" alt="Google Logo" className="w-5 h-5 float-left mr-3" />
+      <Image src={google_logo} alt="Google Logo" className="w-5 h-5 float-left mr-3" />
     );
     buttonText = "Login with Google";
     handleLoginButton = Login;
@@ -103,7 +106,7 @@ export default function Home() {
   if (!loginStatus) {
     return <div className='text-3xl text-center font-semibold'>Loading...</div>;
   }
-  let loginButton = LoginButton(loginStatus.status);
+  const loginButton = LoginButton(loginStatus.status);
   return (
     <div>
       <HelloUser user={loginStatus.user} />
