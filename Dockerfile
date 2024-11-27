@@ -18,7 +18,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 
-ARG ENVIRONMENT=production
+ARG ENVIRONMENT
 
 COPY .env.${ENVIRONMENT} .env.production.local
 
