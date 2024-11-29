@@ -22,7 +22,6 @@ async function Refresh () {
     method: "POST",
     credentials: "include",
   });
-  console.log(response);
   return response;
 }
 
@@ -82,7 +81,14 @@ function HelloUser({ user }: { user: { email: string; name: string; role: string
 
 export default function Home() {
   const [loginStatus, setLoginStatus] = useState<LoginStatus | null>(null);
+  let maxTry = 5;
   const isUserLoggedIn = async () => {
+    if (maxTry === 0) {
+      setLoginStatus({ status: "error", user: { email: "", name: "", role: "", picture: "" } });
+      return;
+    } else {
+      maxTry--;
+    }
     const token = getCookie("access_token");
     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/status`, {
       method: "GET",
