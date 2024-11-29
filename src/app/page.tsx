@@ -3,8 +3,6 @@
 import { useEffect, useState } from 'react';
 
 import Image from 'next/image';
-import { get } from 'http';
-import { getCookie } from 'cookies-next';
 import google_logo from '/public/google_logo.png';
 
 interface LoginStatus {
@@ -22,6 +20,7 @@ async function Refresh () {
     method: "POST",
     credentials: "include",
   });
+  console.log(response);
   return response;
 }
 
@@ -81,20 +80,10 @@ function HelloUser({ user }: { user: { email: string; name: string; role: string
 
 export default function Home() {
   const [loginStatus, setLoginStatus] = useState<LoginStatus | null>(null);
-  let maxTry = 5;
   const isUserLoggedIn = async () => {
-    if (maxTry === 0) {
-      setLoginStatus({ status: "error", user: { email: "", name: "", role: "", picture: "" } });
-      return;
-    } else {
-      maxTry--;
-    }
-    const token = getCookie("access_token");
     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/status`, {
       method: "GET",
-      headers: {
-        "Authorization": `Bearer ${token}`,
-      },
+      credentials: "include",
     });
     if (response.status === 401) {
       const refreshResult = await Refresh();
