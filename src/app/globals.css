@@ -23,3 +23,25 @@ body {
 google {
   font-family: 'Roboto', sans-serif;
 }
+
+@media (min-width: 768px) {
+  .category-large {
+    @apply p-3 pt-5
+  }
+
+  .category-item-large {
+    @apply p-3 pt-1 pb-1 m-1 rounded-lg;
+  }
+}
+
+/* Styles for small screens */
+@media (max-width: 767px) {
+  .category-small {
+    @apply p-3 pt-5
+  }
+
+  .category-item-small {
+    @apply p-3 pt-1 pb-1 m-1 rounded-lg;
+
+  }
+}
