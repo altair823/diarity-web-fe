@@ -5,21 +5,64 @@
 :root {
   --background: #ffffff;
   --foreground: #0a0a0a;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-ko: 'IncheonMICE', sans-serif;
+  --font-en: 'K2D', sans-serif;
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-ko), serif;
+  font-weight: 300; /* Light */
 }
 
-google {
-  font-family: 'Roboto', sans-serif;
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700; /* Bold */
+}
+
+span {
+  font-weight: 500; /* Regular */
+}
+
+p {
+  font-weight: 300; /* Light */
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.english-text {
+  font-family: var(--font-en), serif;
+}
+
+.korean-text {
+  font-family: var(--font-ko), serif;
+}
+
+
+@media (min-width: 768px) {
+  .category-large {
+    @apply p-3 pt-5
+  }
+
+  .category-item-large {
+    @apply p-3 pt-1 pb-1 m-1 rounded-lg;
+  }
+}
+
+/* Styles for small screens */
+@media (max-width: 767px) {
+  .category-small {
+    @apply p-3 pt-5
+  }
+
+  .category-item-small {
+    @apply p-3 pt-1 pb-1 m-1 rounded-lg;
+
+  }
 }
