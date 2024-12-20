@@ -1,53 +1,60 @@
-import "./globals.css";
+'use client'
 
-import type { Metadata } from "next";
-import localFont from "next/font/local";
-
-const _geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const _geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
-
-export const metadata: Metadata = {
-  title: "Diarity",
-  description: "기록을 기록하세요",
-};
-
-function Title() {
-  return (
-    <header>
-      <h1 className="text-center text-indigo-400 font-bold text-5xl">Diarity</h1>
-      <h4 className="text-right">Powered by NestJS</h4>
-    </header>
-  );
-}
+import './globals.css'
+import Head from 'next/head'
+import { UserProvider, useUser } from '@/context/UserContext'
+import NavBar from './navber'
+import { Category } from '@/app/category'
+import { ConditionalSidebar } from '@/app/sidebar'
+import { koFont, enFont } from '@/app/font'
 
 function Footer() {
   return (
-    <footer className="text-right">
+    <footer className='text-right'>
       <p>© 2024 Diarity</p>
     </footer>
-  );
+  )
 }
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: {
+  children: React.ReactNode
+}) {
+  const currentCategory = 'home' // Set the current category dynamically
   return (
-    <html lang="ko">
+    <html lang='ko' className={`${koFont.variable} ${enFont.variable}`}>
+      <Head>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+        <style>{`
+          #menu-toggle:checked ~ #menu {
+            display: block;
+          }
+        `}</style>
+      </Head>
       <body>
-        <Title />
-        <main>{children}</main>
-        <Footer />
+        <UserProvider>
+          <div className='flex flex-col min-h-screen items-center'>
+            <NavBar />
+            <main className='flex-grow flex w-4/6'>
+              <div className='hidden lg:flex flex-col flex-none w-1/4 max-w-64'>
+                <Category
+                  isSmallScreen={false}
+                  currentCategory={currentCategory}
+                />
+              </div>
+              <div className='flex flex-col flex-initial w-2/3 p-4 max-w-screen-md'>
+                {/* Main Content */}
+                {children}
+              </div>
+              <div className='hidden lg:flex flex-col flex-none w-1/4 max-w-64'>
+                <ConditionalSidebar />
+              </div>
+            </main>
+            <Footer />
+          </div>
+        </UserProvider>
       </body>
     </html>
-  );
+  )
 }
