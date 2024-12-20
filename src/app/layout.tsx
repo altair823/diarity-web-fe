@@ -2,9 +2,11 @@
 
 import './globals.css'
 import Head from 'next/head'
-import { UserProvider } from '@/context/UserContext'
+import { UserProvider, useUser } from '@/context/UserContext'
 import NavBar from './navber'
 import { Category } from '@/app/category'
+import { ConditionalSidebar } from '@/app/sidebar'
+import { koFont, enFont } from '@/app/font'
 
 function Footer() {
   return (
@@ -21,7 +23,7 @@ export default function RootLayout({
 }) {
   const currentCategory = 'home' // Set the current category dynamically
   return (
-    <html lang='ko'>
+    <html lang='ko' className={`${koFont.variable} ${enFont.variable}`}>
       <Head>
         <meta name='viewport' content='width=device-width, initial-scale=1.0' />
         <style>{`
@@ -35,7 +37,7 @@ export default function RootLayout({
           <div className='flex flex-col min-h-screen items-center'>
             <NavBar />
             <main className='flex-grow flex w-4/6'>
-              <div className='hidden md:flex flex-col flex-none w-1/4 max-w-64'>
+              <div className='hidden lg:flex flex-col flex-none w-1/4 max-w-64'>
                 <Category
                   isSmallScreen={false}
                   currentCategory={currentCategory}
@@ -45,9 +47,8 @@ export default function RootLayout({
                 {/* Main Content */}
                 {children}
               </div>
-              <div className='hidden md:flex flex-col flex-none w-1/4 max-w-64 bg-gray-100'>
-                {/* Right Column Content */}
-                Right Column
+              <div className='hidden lg:flex flex-col flex-none w-1/4 max-w-64'>
+                <ConditionalSidebar />
               </div>
             </main>
             <Footer />

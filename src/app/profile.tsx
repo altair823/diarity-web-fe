@@ -4,7 +4,7 @@ import defaultProfile from '/public/default_profile_image.svg'
 import { Logout } from '@/app/login'
 import { useState } from 'react'
 
-export function GetProfileImage() {
+export function Profile() {
   const { loginInfo } = useUser()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 

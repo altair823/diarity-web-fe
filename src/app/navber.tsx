@@ -15,7 +15,7 @@ function NavBar() {
     <header className='w-screen'>
       <nav className='bg-gray-300 border-gray-200'>
         <div className='px-6 bg-gray-300 shadow-md flex flex-wrap items-center py-0'>
-          <div className='md:hidden pr-5'>
+          <div className='lg:hidden pr-5'>
             <button
               onClick={() => setCategoryOpen(!categoryOpen)}
               className='block text-gray-800 hover:text-gray-700 focus:text-gray-700 focus:outline-none'
@@ -42,7 +42,9 @@ function NavBar() {
           <div className='flex-1 flex items-center'>
             <Link href='/' className='flex text-lg font-semibold'>
               <Image src={diarity_logo} alt='Diarity Logo' />
-              <div className='text-2xl m-3 text-purple-600'>Diarity</div>
+              <div className='english-text font-bold text-3xl m-3 text-purple-600'>
+                Diarity
+              </div>
             </Link>
           </div>
           <div className='flex items-center w-auto' id='menu'>

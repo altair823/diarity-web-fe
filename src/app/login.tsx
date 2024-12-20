@@ -1,6 +1,6 @@
 import { useUser } from '@/context/UserContext'
 import { useEffect, useState } from 'react'
-import { GetProfileImage } from '@/app/profile'
+import { Profile } from '@/app/profile'
 
 async function Refresh() {
   const response = await fetch(
@@ -61,7 +61,7 @@ function LoginButton() {
   return (
     <div>
       {isLoggedIn ? (
-        <GetProfileImage />
+        <Profile />
       ) : (
         <button
           onClick={Login}
