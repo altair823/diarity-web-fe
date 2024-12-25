@@ -4,11 +4,12 @@ import diarity_logo from '/public/diarity-logo.svg'
 import new_button from '/public/new.svg'
 import notification_button from '/public/notifications.svg'
 import Link from 'next/link'
-import { LoginButton } from '@/app/login'
+import { LoginButton } from '@/app/auth'
 import { Category } from '@/app/category'
 import { useState } from 'react'
+import { useUser } from '@/context/UserContext'
 
-function NavBar() {
+export function NavBar() {
   const [categoryOpen, setCategoryOpen] = useState(false)
   const currentCategory = 'home' // Set the current category dynamically
   return (
@@ -47,27 +48,11 @@ function NavBar() {
               </div>
             </Link>
           </div>
-          <div className='flex items-center w-auto' id='menu'>
-            <ul className='text-xl text-center justify-center gap-x-5 flex items-center'>
-              <li>
-                <Link href='/'>
-                  <Image src={new_button} alt='New Button' />
-                </Link>
-              </li>
-              <li>
-                <Link href='#'>
-                  <Image src={notification_button} alt='Notification Button' />
-                </Link>
-              </li>
-              <li className='py-2 lg:py-0'>
-                <LoginButton />
-              </li>
-            </ul>
-          </div>
+          <ConditionalMenu />
         </div>
       </nav>
       <div
-        className={`${categoryOpen ? 'block' : 'hidden'} md:hidden bg-gray-300`}
+        className={`${categoryOpen ? 'block' : 'hidden'} lg:hidden bg-gray-300`}
       >
         <Category isSmallScreen={true} currentCategory={currentCategory} />
       </div>
@@ -75,4 +60,37 @@ function NavBar() {
   )
 }
 
-export default NavBar
+function ConditionalMenu() {
+  const { loginInfo } = useUser()
+  if (loginInfo?.status === 'success') {
+    return (
+      <div className='flex items-center w-auto' id='menu'>
+        <ul className='text-xl text-center justify-center gap-x-5 flex items-center'>
+          <li>
+            <Link href='/newPost'>
+              <Image src={new_button} alt='New Button' />
+            </Link>
+          </li>
+          <li>
+            <Link href='#'>
+              <Image src={notification_button} alt='Notification Button' />
+            </Link>
+          </li>
+          <li className='py-2 lg:py-0'>
+            <LoginButton />
+          </li>
+        </ul>
+      </div>
+    )
+  } else {
+    return (
+      <div className='flex items-center w-auto' id='menu'>
+        <ul className='text-xl text-center justify-center gap-x-5 flex items-center'>
+          <li className='py-2 lg:py-0'>
+            <LoginButton />
+          </li>
+        </ul>
+      </div>
+    )
+  }
+}
