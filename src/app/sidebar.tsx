@@ -1,4 +1,4 @@
-import { LoginButton } from '@/app/login'
+import { LoginButton } from '@/app/auth'
 import { useUser } from '@/context/UserContext'
 
 function LandingBanner() {

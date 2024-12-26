@@ -1,9 +1,9 @@
 'use client'
 
-import './globals.css'
+import '../globals.css'
 import Head from 'next/head'
-import { UserProvider, useUser } from '@/context/UserContext'
-import NavBar from './navber'
+import { UserProvider } from '@/context/UserContext'
+import { NavBar } from '../navber'
 import { Category } from '@/app/category'
 import { ConditionalSidebar } from '@/app/sidebar'
 import { koFont, enFont } from '@/app/font'
@@ -31,6 +31,7 @@ export default function RootLayout({
             display: block;
           }
         `}</style>
+        <title>Diarity</title>
       </Head>
       <body>
         <UserProvider>
