@@ -66,3 +66,18 @@ p {
 
   }
 }
+
+.tiptap p.is-editor-empty:first-child::before {
+  color: #adb5bd;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+.auto-resize {
+  overflow: hidden;
+  resize: none;
+  min-height: 12rem; /* Minimum height of the editor */
+  max-height: none;  /* No maximum height */
+}

@@ -1,8 +1,15 @@
 'use client'
 
-import { GoogleLoginButton } from '@/app/auth'
+import { CheckLogin, GoogleLoginButton } from '@/app/auth'
+import { useRouter } from 'next/navigation'
 
 export default function LoginPage() {
+  const router = useRouter()
+  CheckLogin().then((result) => {
+    if (result) {
+      router.push('/')
+    }
+  })
   return (
     <div
       className={

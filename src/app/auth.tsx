@@ -43,7 +43,7 @@ async function Auth() {
 }
 
 function LoginButton() {
-  const { loginInfo, setUser } = useUser()
+  const { setUser } = useUser()
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   useEffect(() => {
@@ -87,48 +87,17 @@ function LoginButton() {
 }
 
 function GoogleLoginButton() {
-  const { loginInfo, setUser } = useUser()
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-
-  useEffect(() => {
-    const isUserLoggedIn = async () => {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/status`,
-        {
-          method: 'GET',
-          credentials: 'include',
-        }
-      )
-      if (response.status === 401) {
-        const refreshResult = await Refresh()
-        if (refreshResult.status === 201) {
-          return isUserLoggedIn()
-        }
-        return
-      }
-      const data = await response.json()
-      setUser(data)
-      setIsLoggedIn(true)
-    }
-
-    isUserLoggedIn().then((r) => console.log(r))
-  }, [setUser])
-
   return (
     <div>
-      {isLoggedIn ? (
-        <Profile />
-      ) : (
-        <div className={'w-screen flex justify-center'}>
-          <button
-            onClick={Auth}
-            className='text-black bg-white p-1 pl-4 max-h-12 rounded-3xl flex items-center justify-between w-4/5 md:w-2/6 min-w-80'
-          >
-            Google 계정으로 로그인
-            <Image src={google_logo} alt='Google Logo' />
-          </button>
-        </div>
-      )}
+      <div className={'w-screen flex justify-center'}>
+        <button
+          onClick={Auth}
+          className='text-black bg-white p-1 pl-4 max-h-12 rounded-3xl flex items-center justify-between w-4/5 md:w-2/6 min-w-80'
+        >
+          Google 계정으로 로그인
+          <Image src={google_logo} alt='Google Logo' />
+        </button>
+      </div>
     </div>
   )
 }
