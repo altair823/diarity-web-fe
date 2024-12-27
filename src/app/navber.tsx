@@ -42,7 +42,11 @@ export function NavBar() {
 
           <div className='flex-1 flex items-center'>
             <Link href='/' className='flex text-lg font-semibold'>
-              <Image src={diarity_logo} alt='Diarity Logo' />
+              <Image
+                src={diarity_logo}
+                alt='Diarity Logo'
+                className={'h-auto w-10'}
+              />
               <div className='english-text font-bold text-3xl m-3 text-purple-600'>
                 Diarity
               </div>
@@ -67,7 +71,7 @@ function ConditionalMenu() {
       <div className='flex items-center w-auto' id='menu'>
         <ul className='text-xl text-center justify-center gap-x-5 flex items-center'>
           <li>
-            <Link href='/newPost'>
+            <Link href='/post'>
               <Image src={new_button} alt='New Button' />
             </Link>
           </li>

@@ -37,15 +37,14 @@ export default function RootLayout({
         <UserProvider>
           <div className='flex flex-col min-h-screen items-center'>
             <NavBar />
-            <main className='flex-grow flex w-4/6'>
+            <main className='flex-grow flex lg:w-4/6'>
               <div className='hidden lg:flex flex-col flex-none w-1/4 max-w-64'>
                 <Category
                   isSmallScreen={false}
                   currentCategory={currentCategory}
                 />
               </div>
-              <div className='flex flex-col flex-initial w-2/3 p-4 max-w-screen-md'>
-                {/* Main Content */}
+              <div className='flex flex-col flex-none lg:w-2/3 lg:p-4 lg:max-w-screen-md'>
                 {children}
               </div>
               <div className='hidden lg:flex flex-col flex-none w-1/4 max-w-64'>
