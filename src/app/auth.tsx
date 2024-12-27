@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { Profile } from '@/app/profile'
 import Image from 'next/image'
 import google_logo from '/public/google_logo.svg'
+import { redirectToAbsolute } from '@/app/common'
 
 async function CheckLogin() {
   const response = await fetch(
@@ -12,7 +13,6 @@ async function CheckLogin() {
       credentials: 'include',
     }
   )
-  console.log(response)
   return response.status === 200
 }
 
@@ -39,7 +39,7 @@ async function Logout() {
 }
 
 async function Auth() {
-  window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login/google`
+  redirectToAbsolute(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login/google`)
 }
 
 function LoginButton() {
@@ -66,10 +66,8 @@ function LoginButton() {
       setUser(data)
       setIsLoggedIn(true)
     }
-
-    isUserLoggedIn().then((r) => console.log(r))
+    isUserLoggedIn().then((r) => r)
   }, [setUser])
-
   return (
     <div>
       {isLoggedIn ? (

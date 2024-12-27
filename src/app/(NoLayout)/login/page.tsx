@@ -1,15 +1,17 @@
 'use client'
 
 import { CheckLogin, GoogleLoginButton } from '@/app/auth'
-import { useRouter } from 'next/navigation'
+import { redirectTo } from '@/app/common'
+import { useEffect } from 'react'
 
 export default function LoginPage() {
-  const router = useRouter()
-  CheckLogin().then((result) => {
-    if (result) {
-      router.push('/')
-    }
-  })
+  useEffect(() => {
+    CheckLogin().then((result) => {
+      if (result) {
+        redirectTo('/')
+      }
+    })
+  }, [])
   return (
     <div
       className={
