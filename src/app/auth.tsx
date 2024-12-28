@@ -5,27 +5,29 @@ import Image from 'next/image'
 import google_logo from '/public/google_logo.svg'
 import { redirectToAbsolute } from '@/app/common'
 
-async function CheckLogin() {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/status`,
-    {
-      method: 'GET',
-      credentials: 'include',
-    }
-  )
-  return response.status === 200
-}
+function CheckLogin(): boolean {
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
-async function Refresh() {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/refresh`,
-    {
-      method: 'POST',
-      credentials: 'include',
+  useEffect(() => {
+    const checkAuthStatus = async () => {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/status`,
+        {
+          method: 'GET',
+          credentials: 'include',
+        }
+      )
+      if (response.status === 200) {
+        setIsLoggedIn(true)
+      } else {
+        setIsLoggedIn(false)
+      }
     }
-  )
-  console.log(response)
-  return response
+
+    checkAuthStatus()
+  }, [isLoggedIn])
+
+  return isLoggedIn
 }
 
 async function Logout() {
@@ -34,6 +36,9 @@ async function Logout() {
     method: 'POST',
     credentials: 'include',
   })
+  // Delete user info
+  localStorage.removeItem('loginInfo')
+
   // Refresh page
   window.location.href = '/'
 }
@@ -56,7 +61,13 @@ function LoginButton() {
         }
       )
       if (response.status === 401) {
-        const refreshResult = await Refresh()
+        const refreshResult = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/refresh`,
+          {
+            method: 'POST',
+            credentials: 'include',
+          }
+        )
         if (refreshResult.status === 201) {
           return isUserLoggedIn()
         }
