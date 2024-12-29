@@ -1,7 +1,7 @@
 import { useUser } from '@/context/UserContext'
 import Image from 'next/image'
 import defaultProfile from '/public/default_profile_image.svg'
-import { Logout } from '@/app/login'
+import { Logout } from '@/app/auth'
 import { useState } from 'react'
 
 export function Profile() {

@@ -5,7 +5,7 @@
 :root {
   --background: #ffffff;
   --foreground: #0a0a0a;
-  --font-ko: 'IncheonMICE', sans-serif;
+  --font-ko: 'Gothic A1', sans-serif;
   --font-en: 'K2D', sans-serif;
 }
 
@@ -13,7 +13,10 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: var(--font-ko), serif;
-  font-weight: 300; /* Light */
+}
+
+* {
+  font-family: var(--font-ko), serif;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -24,15 +27,11 @@ span {
   font-weight: 500; /* Regular */
 }
 
-p {
-  font-weight: 300; /* Light */
-}
-
-.font-bold {
+.font-fbold {
   font-weight: 700;
 }
 
-.font-medium {
+.font-fmedium {
   font-weight: 500;
 }
 
@@ -45,9 +44,10 @@ p {
 }
 
 
-@media (min-width: 768px) {
+/* large~ */
+@media (min-width: 1024px) {
   .category-large {
-    @apply p-3 pt-5
+    @apply p-3 pt-5;
   }
 
   .category-item-large {
@@ -56,13 +56,27 @@ p {
 }
 
 /* Styles for small screens */
-@media (max-width: 767px) {
+@media (max-width: 1023px) {
   .category-small {
-    @apply p-3 pt-5
+    @apply p-3 pt-5;
   }
 
   .category-item-small {
     @apply p-3 pt-1 pb-1 m-1 rounded-lg;
-
   }
+}
+
+.tiptap p.is-editor-empty:first-child::before {
+  color: #adb5bd;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+.auto-resize {
+  overflow: hidden;
+  resize: none;
+  min-height: 12rem; /* Minimum height of the editor */
+  max-height: none;  /* No maximum height */
 }
