@@ -6,7 +6,7 @@ import notification_button from '/public/notifications.svg'
 import Link from 'next/link'
 import { LoginButton } from '@/app/auth'
 import { Category } from '@/app/category'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useUser } from '@/context/UserContext'
 
 export function NavBar() {
@@ -66,12 +66,24 @@ export function NavBar() {
 
 function ConditionalMenu() {
   const { loginInfo } = useUser()
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (loginInfo !== undefined) {
+      setLoading(false)
+    }
+  }, [loginInfo])
+
+  if (loading) {
+    return <div>Loading...</div>
+  }
+
   if (loginInfo?.status === 'success') {
     return (
       <div className='flex items-center w-auto' id='menu'>
         <ul className='text-xl text-center justify-center gap-x-5 flex items-center'>
           <li>
-            <Link href='/post'>
+            <Link href='/post/submit'>
               <Image src={new_button} alt='New Button' />
             </Link>
           </li>

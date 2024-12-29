@@ -1,4 +1,12 @@
-import { createContext, useContext, useState, ReactNode } from 'react'
+'use client'
+
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from 'react'
 
 interface User {
   email: string
@@ -20,10 +28,33 @@ interface UserContextType {
 const UserContext = createContext<UserContextType | undefined>(undefined)
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
-  const [loginInfo, setUser] = useState<UserStatus | null>(null)
+  const [loginInfo, setLoginInfo] = useState<UserStatus | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedUser = localStorage.getItem('loginInfo')
+      if (storedUser) {
+        setLoginInfo(JSON.parse(storedUser))
+      }
+      setLoading(false)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (loginInfo) {
+      localStorage.setItem('loginInfo', JSON.stringify(loginInfo))
+    } else {
+      localStorage.removeItem('loginInfo')
+    }
+  }, [loginInfo])
+
+  if (loading) {
+    return <div>Loading...</div>
+  }
 
   return (
-    <UserContext.Provider value={{ loginInfo, setUser }}>
+    <UserContext.Provider value={{ loginInfo, setUser: setLoginInfo }}>
       {children}
     </UserContext.Provider>
   )
