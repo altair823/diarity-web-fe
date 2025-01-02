@@ -3,17 +3,12 @@ import localFont from 'next/font/local'
 const koFont = localFont({
   src: [
     {
-      path: './fonts/IncheonMICE-Light.woff2',
-      style: 'normal',
-      weight: '300',
-    },
-    {
-      path: './fonts/IncheonMICE-Medium.woff2',
+      path: './fonts/GothicA1-Medium.ttf',
       style: 'normal',
       weight: '500',
     },
     {
-      path: './fonts/IncheonMICE-Bold.woff2',
+      path: './fonts/GothicA1-Bold.ttf',
       style: 'normal',
       weight: '700',
     },

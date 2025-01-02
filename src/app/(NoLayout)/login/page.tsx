@@ -5,13 +5,13 @@ import { redirectTo } from '@/app/common'
 import { useEffect } from 'react'
 
 export default function LoginPage() {
+  const isLoggedIn = CheckLogin()
+
   useEffect(() => {
-    CheckLogin().then((result) => {
-      if (result) {
-        redirectTo('/')
-      }
-    })
-  }, [])
+    if (isLoggedIn) {
+      redirectTo('/')
+    }
+  }, [isLoggedIn])
   return (
     <div
       className={
