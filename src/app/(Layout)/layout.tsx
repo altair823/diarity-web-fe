@@ -11,7 +11,7 @@ import { koFont, enFont } from '@/app/font'
 function Footer() {
   return (
     <footer className='text-right'>
-      <p>© 2024 Diarity</p>
+      <p>© 2025 Diarity</p>
     </footer>
   )
 }
