@@ -6,7 +6,7 @@ import DOMPurify from 'dompurify'
 import { PostBox } from '@/app/(Layout)/post/post'
 
 export interface Post {
-  id: number
+  postId: number
   title: string
   createdAt: Date
   updatedAt: Date
@@ -41,7 +41,7 @@ export default function Home() {
   }
 
   const content = sanitizedPosts.map((post: Post) => (
-    <div key={post.id}>
+    <div key={post.postId}>
       <div className={'m-4'}>
         <PostBox post={post} />
       </div>
