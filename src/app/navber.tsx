@@ -4,10 +4,9 @@ import diarity_logo from '/public/diarity-logo.svg'
 import new_button from '/public/new.svg'
 import notification_button from '/public/notifications.svg'
 import Link from 'next/link'
-import { LoginButton } from '@/app/auth'
+import { CheckLogin, LoginButton } from '@/app/auth'
 import { Category } from '@/app/category'
-import { useState, useEffect } from 'react'
-import { useUser } from '@/context/UserContext'
+import { useState } from 'react'
 
 export function NavBar() {
   const [categoryOpen, setCategoryOpen] = useState(false)
@@ -65,25 +64,13 @@ export function NavBar() {
 }
 
 function ConditionalMenu() {
-  const { loginInfo } = useUser()
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    if (loginInfo !== undefined) {
-      setLoading(false)
-    }
-  }, [loginInfo])
-
-  if (loading) {
-    return <div>Loading...</div>
-  }
-
-  if (loginInfo?.status === 'success') {
+  const isLoggedIn = CheckLogin()
+  if (isLoggedIn) {
     return (
       <div className='flex items-center w-auto' id='menu'>
         <ul className='text-xl text-center justify-center gap-x-5 flex items-center'>
           <li>
-            <Link href='/post/submit'>
+            <Link href='/(Layout)/posts/submit'>
               <Image src={new_button} alt='New Button' />
             </Link>
           </li>
