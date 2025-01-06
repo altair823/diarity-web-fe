@@ -44,7 +44,7 @@ export default function RootLayout({
                   currentCategory={currentCategory}
                 />
               </div>
-              <div className='flex flex-col flex-initial w-screen lg:w-1/3 lg:p-4 lg:max-w-screen-md'>
+              <div className='flex flex-col flex-initial w-screen lg:w-1/2 lg:p-4 lg:max-w-screen-md'>
                 {children}
               </div>
               <div className='hidden lg:flex flex-col flex-none w-1/4 max-w-64'>
