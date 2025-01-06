@@ -70,7 +70,7 @@ function ConditionalMenu() {
       <div className='flex items-center w-auto' id='menu'>
         <ul className='text-xl text-center justify-center gap-x-5 flex items-center'>
           <li>
-            <Link href='/(Layout)/posts/submit'>
+            <Link href='/posts/submit'>
               <Image src={new_button} alt='New Button' />
             </Link>
           </li>

@@ -51,6 +51,12 @@ export function PostSummaryBox({ post }: { post: Post }) {
   )
 }
 
+function dateToString(date: Date) {
+  const dateString = date.toLocaleDateString()
+  const timeString = date.toLocaleTimeString()
+  return `${dateString} ${timeString}`
+}
+
 export function PostDetailBox({ post }: { post: Post }) {
   const title = DOMPurify.sanitize(post.title, { USE_PROFILES: { html: true } })
   const content = DOMPurify.sanitize(post.content, {
@@ -59,8 +65,6 @@ export function PostDetailBox({ post }: { post: Post }) {
   const author = DOMPurify.sanitize(post.authorDisplayName, {
     USE_PROFILES: { html: true },
   })
-  const createdAt = new Date(post.createdAt)
-  const updatedAt = new Date(post.updatedAt)
   const handleAuthorClick = (event: React.MouseEvent) => {
     event.stopPropagation()
     window.location.href = `/users/${post.authorEmail}`
@@ -77,14 +81,19 @@ export function PostDetailBox({ post }: { post: Post }) {
             className={'font-bold text-lg break-words'}
             dangerouslySetInnerHTML={{ __html: title }}
           />
-          <p className={'text-xs text-gray-500 mt-4 min-w-16'}>
-            {createdAt.toTimeString()}
-          </p>
+          <div className={'flex flex-col flex-end min-w-20 mt-4 right'}>
+            <p className={'text-xs text-gray-500 text-end'}>
+              {post.createdAt.toLocaleDateString()}
+            </p>
+            <p className={'text-xs text-gray-500 text-end'}>
+              {post.createdAt.toLocaleTimeString()}
+            </p>
+          </div>
         </div>
         <p
           dangerouslySetInnerHTML={{ __html: author }}
           className={
-            'pt-2 text-xs w-fit text-gray-500 cursor-pointer hover:text-purple-500'
+            'pt-4 text-xs w-fit text-gray-500 cursor-pointer hover:text-purple-500'
           }
           onClick={handleAuthorClick}
         />
@@ -92,9 +101,6 @@ export function PostDetailBox({ post }: { post: Post }) {
           dangerouslySetInnerHTML={{ __html: content }}
           className={'pt-4 break-words'}
         />
-        <p className={'text-xs text-gray-500 pt-2'}>
-          {updatedAt.toLocaleDateString()}
-        </p>
       </div>
     </div>
   )
