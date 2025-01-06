@@ -51,12 +51,6 @@ export function PostSummaryBox({ post }: { post: Post }) {
   )
 }
 
-function dateToString(date: Date) {
-  const dateString = date.toLocaleDateString()
-  const timeString = date.toLocaleTimeString()
-  return `${dateString} ${timeString}`
-}
-
 export function PostDetailBox({ post }: { post: Post }) {
   const title = DOMPurify.sanitize(post.title, { USE_PROFILES: { html: true } })
   const content = DOMPurify.sanitize(post.content, {

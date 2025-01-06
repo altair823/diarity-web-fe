@@ -41,7 +41,7 @@ function PostButton({
           title: titleEditor!.getHTML(),
           content: bodyEditor!.getHTML(),
           authorEmail: 'test@gmail.com',
-        }).then((r) => {
+        }).then(() => {
           // redirect to index page
           window.location.href = '/'
         })
