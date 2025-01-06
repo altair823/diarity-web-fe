@@ -41,8 +41,7 @@ function PostButton({
           title: titleEditor!.getHTML(),
           content: bodyEditor!.getHTML(),
           authorEmail: 'test@gmail.com',
-        }).then((r) => {
-          console.log(r)
+        }).then(() => {
           // redirect to index page
           window.location.href = '/'
         })
@@ -149,7 +148,6 @@ function NewPost() {
   const { loginInfo } = useUser()
 
   useEffect(() => {
-    console.log(loginInfo)
     if (loginInfo?.status !== 'success') {
       redirectTo('/login')
     }

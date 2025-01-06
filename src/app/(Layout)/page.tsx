@@ -1,9 +1,9 @@
 'use client'
 
-import { useAllPosts } from '@/apiRequests/post'
+import { useGetAllPosts } from '@/apiRequests/post'
 import { useEffect, useState } from 'react'
 import DOMPurify from 'dompurify'
-import { PostBox } from '@/app/(Layout)/post/post'
+import { PostSummaryBox } from '@/app/(Layout)/posts/post'
 
 export interface Post {
   postId: number
@@ -19,7 +19,7 @@ export interface Post {
 }
 
 export default function Home() {
-  const { posts, isError, isLoading } = useAllPosts()
+  const { posts, isError, isLoading } = useGetAllPosts()
   const [sanitizedPosts, setSanitizedPosts] = useState<Post[]>([])
 
   useEffect(() => {
@@ -43,7 +43,7 @@ export default function Home() {
   const content = sanitizedPosts.map((post: Post) => (
     <div key={post.postId}>
       <div className={'m-4'}>
-        <PostBox post={post} />
+        <PostSummaryBox post={post} />
       </div>
     </div>
   ))
