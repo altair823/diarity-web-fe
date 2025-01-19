@@ -2,6 +2,9 @@
 
 import { Post } from '../page'
 import DOMPurify from 'dompurify'
+import Image from 'next/image'
+
+import arrow_back from '/public/icons/arrow_back.svg'
 
 export function PostSummaryBox({ post }: { post: Post }) {
   const title = DOMPurify.sanitize(post.title, { USE_PROFILES: { html: true } })
@@ -64,37 +67,52 @@ export function PostDetailBox({ post }: { post: Post }) {
     window.location.href = `/users/${post.authorEmail}`
   }
   return (
-    <div
-      className={
-        'bg-gray-200 pt-2 pr-4 pl-4 pb-4 lg:pr-6 lg:pl-6 rounded-xl mb-6'
-      }
-    >
-      <div className='flex flex-col'>
-        <div className={'flex justify-between items-start'}>
-          <h1
-            className={'font-bold text-lg break-words'}
-            dangerouslySetInnerHTML={{ __html: title }}
-          />
-          <div className={'flex flex-col flex-end min-w-20 mt-4 right'}>
-            <p className={'text-xs text-gray-500 text-end'}>
-              {post.createdAt.toLocaleDateString()}
-            </p>
-            <p className={'text-xs text-gray-500 text-end'}>
-              {post.createdAt.toLocaleTimeString()}
-            </p>
+    <div>
+      <div className={'bg-gray-200 p-4 lg:pr-6 lg:pl-6 rounded-xl m-6'}>
+        <div className='flex flex-col'>
+          <div className={'flex justify-between items-start'}>
+            <div className={'-ml-1 lg:-ml-3 mr-2'}>
+              <button
+                onClick={() => {
+                  window.history.back()
+                }}
+              >
+                <Image
+                  src={arrow_back}
+                  alt={'back'}
+                  className={'hover:bg-gray-100 rounded-full p-1'}
+                  style={{
+                    width: '35px',
+                    maxWidth: '35px',
+                  }}
+                />
+              </button>
+            </div>
+            <h1
+              className={'font-bold text-lg break-words'}
+              dangerouslySetInnerHTML={{ __html: title }}
+            />
+            <div className={'flex flex-col flex-end min-w-20 mt-4 right'}>
+              <p className={'text-xs text-gray-500 text-end'}>
+                {post.createdAt.toLocaleDateString()}
+              </p>
+              <p className={'text-xs text-gray-500 text-end'}>
+                {post.createdAt.toLocaleTimeString()}
+              </p>
+            </div>
           </div>
+          <p
+            dangerouslySetInnerHTML={{ __html: author }}
+            className={
+              'pt-4 text-xs w-fit text-gray-500 cursor-pointer hover:text-purple-500'
+            }
+            onClick={handleAuthorClick}
+          />
+          <p
+            dangerouslySetInnerHTML={{ __html: content }}
+            className={'pt-4 break-words'}
+          />
         </div>
-        <p
-          dangerouslySetInnerHTML={{ __html: author }}
-          className={
-            'pt-4 text-xs w-fit text-gray-500 cursor-pointer hover:text-purple-500'
-          }
-          onClick={handleAuthorClick}
-        />
-        <p
-          dangerouslySetInnerHTML={{ __html: content }}
-          className={'pt-4 break-words'}
-        />
       </div>
     </div>
   )
