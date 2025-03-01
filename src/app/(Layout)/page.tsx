@@ -16,6 +16,9 @@ export interface Post {
   images: string[]
   link: string
   isPublic: boolean
+  likesCount: number
+  commentsCount: number
+  isLiked: boolean
 }
 
 export default function Home() {
@@ -40,6 +43,7 @@ export default function Home() {
     return <div>Error</div>
   }
 
+  console.log(posts)
   const content = sanitizedPosts.map((post: Post) => (
     <div key={post.postId}>
       <div className={'m-4'}>

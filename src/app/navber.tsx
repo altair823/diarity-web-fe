@@ -4,9 +4,11 @@ import diarity_logo from '/public/diarity-logo.svg'
 import new_button from '/public/new.svg'
 import notification_button from '/public/notifications.svg'
 import Link from 'next/link'
-import { CheckLogin, LoginButton } from '@/app/auth'
+import { LoginButton, TryLogin } from '@/app/auth'
 import { Category } from '@/app/category'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { Profile } from '@/app/profile'
+import { useUser } from '@/store/authStore'
 
 export function NavBar() {
   const [categoryOpen, setCategoryOpen] = useState(false)
@@ -64,36 +66,51 @@ export function NavBar() {
 }
 
 function ConditionalMenu() {
-  const isLoggedIn = CheckLogin()
-  if (isLoggedIn) {
-    return (
-      <div className='flex items-center w-auto' id='menu'>
-        <ul className='text-xl text-center justify-center gap-x-5 flex items-center'>
-          <li>
-            <Link href='/posts/submit'>
-              <Image src={new_button} alt='New Button' />
-            </Link>
-          </li>
-          <li>
-            <Link href='#'>
-              <Image src={notification_button} alt='Notification Button' />
-            </Link>
-          </li>
-          <li className='py-2 lg:py-0'>
-            <LoginButton />
-          </li>
-        </ul>
-      </div>
-    )
-  } else {
-    return (
-      <div className='flex items-center w-auto' id='menu'>
-        <ul className='text-xl text-center justify-center gap-x-5 flex items-center'>
-          <li className='py-2 lg:py-0'>
-            <LoginButton />
-          </li>
-        </ul>
-      </div>
-    )
+  const [loading, setLoading] = useState(true)
+  const user = useUser((state) => state)
+
+  useEffect(() => {
+    setLoading(false)
+  }, [])
+
+  if (loading) {
+    return null // or return a loading indicator
   }
+
+  const newButton = (
+    <li>
+      <Link href='/posts/submit'>
+        <Image src={new_button} alt='New Button' />
+      </Link>
+    </li>
+  )
+  const notificationButton = (
+    <li>
+      <Link href='#'>
+        <Image src={notification_button} alt='Notification Button' />
+      </Link>
+    </li>
+  )
+  const profile = (
+    <li className='py-2 lg:py-0'>
+      <Profile />
+    </li>
+  )
+  const loginButton = (
+    <li className='py-2 lg:py-0'>
+      <LoginButton />
+    </li>
+  )
+
+  return (
+    <div className='flex items-center w-auto' id='menu'>
+      <ul className='text-xl text-center justify-center gap-x-5 flex items-center'>
+        {user.isLogin ? newButton : null}
+        {user.isLogin ? notificationButton : null}
+        {user.isLogin ? profile : loginButton}
+      </ul>
+    </div>
+  )
 }
+
+export default ConditionalMenu

@@ -1,9 +1,33 @@
-import { useUser } from '@/context/UserContext'
 import { useEffect, useState } from 'react'
-import { Profile } from '@/app/profile'
 import Image from 'next/image'
 import google_logo from '/public/google_logo.svg'
 import { redirectToAbsolute } from '@/app/common'
+import { useUser } from '@/store/authStore'
+
+async function TryLogin() {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/status`,
+    {
+      method: 'GET',
+      credentials: 'include',
+    }
+  )
+  if (response.status === 401 || response.status === 403) {
+    const refreshResult = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/refresh`,
+      {
+        method: 'POST',
+        credentials: 'include',
+      }
+    )
+    if (refreshResult.status === 201) {
+      return TryLogin()
+    }
+    return null
+  }
+  const data = await response.json()
+  return data.user
+}
 
 function CheckLogin(): boolean {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -36,8 +60,7 @@ async function Logout() {
     method: 'POST',
     credentials: 'include',
   })
-  // Delete user info
-  localStorage.removeItem('loginInfo')
+  useUser.getState().logout()
 
   // Refresh page
   window.location.href = '/'
@@ -48,49 +71,21 @@ async function Auth() {
 }
 
 function LoginButton() {
-  const { setUser } = useUser()
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-
   useEffect(() => {
-    const isUserLoggedIn = async () => {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/status`,
-        {
-          method: 'GET',
-          credentials: 'include',
-        }
-      )
-      if (response.status === 401) {
-        const refreshResult = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/refresh`,
-          {
-            method: 'POST',
-            credentials: 'include',
-          }
-        )
-        if (refreshResult.status === 201) {
-          return isUserLoggedIn()
-        }
-        return
+    TryLogin().then((user) => {
+      if (user) {
+        useUser.getState().login(user)
       }
-      const data = await response.json()
-      setUser(data)
-      setIsLoggedIn(true)
-    }
-    isUserLoggedIn().then((r) => r)
-  }, [setUser])
+    })
+  }, [])
   return (
     <div>
-      {isLoggedIn ? (
-        <Profile />
-      ) : (
-        <button
-          onClick={Auth}
-          className='text-black bg-purple-300 p-1 pl-9 pr-9 rounded-md'
-        >
-          로그인
-        </button>
-      )}
+      <button
+        onClick={Auth}
+        className='text-black bg-purple-300 p-1 pl-9 pr-9 rounded-md'
+      >
+        로그인
+      </button>
     </div>
   )
 }
@@ -111,4 +106,4 @@ function GoogleLoginButton() {
   )
 }
 
-export { LoginButton, Logout, CheckLogin, GoogleLoginButton }
+export { LoginButton, Logout, CheckLogin, GoogleLoginButton, TryLogin }

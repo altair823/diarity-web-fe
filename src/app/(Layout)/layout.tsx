@@ -2,11 +2,11 @@
 
 import '../globals.css'
 import Head from 'next/head'
-import { UserProvider } from '@/context/UserContext'
 import { NavBar } from '../navber'
 import { Category } from '@/app/category'
 import { ConditionalSidebar } from '@/app/sidebar'
 import { koFont, enFont } from '@/app/font'
+import { Suspense } from 'react'
 
 function Footer() {
   return (
@@ -22,6 +22,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   const currentCategory = 'home' // Set the current category dynamically
+
   return (
     <html lang='ko' className={`${koFont.variable} ${enFont.variable}`}>
       <Head>
@@ -34,7 +35,7 @@ export default function RootLayout({
         <title>Diarity</title>
       </Head>
       <body>
-        <UserProvider>
+        <Suspense fallback={<div>Loading...</div>}>
           <div className='flex flex-col min-h-screen items-center'>
             <NavBar />
             <main className='flex-grow flex lg:w-full justify-evenly'>
@@ -53,7 +54,7 @@ export default function RootLayout({
             </main>
             <Footer />
           </div>
-        </UserProvider>
+        </Suspense>
       </body>
     </html>
   )

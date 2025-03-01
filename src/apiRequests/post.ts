@@ -40,10 +40,6 @@ export function useGetAllPosts() {
 }
 
 export function useGetPost(id: string) {
-  // return fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/posts/${id}`, {
-  //   method: 'GET',
-  //   credentials: 'include',
-  // }).then((res) => res.json())
   const { data, error, isLoading } = useSWR(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/posts/${id}`,
     fetcher,
