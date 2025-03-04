@@ -75,7 +75,7 @@ jobs:
             docker rm $APP_NAME || true
             docker run -d \
               --name $APP_NAME \
-              --restart always
+              --restart always \
               -p 3000:3000 \
               -v $APP_PATH/logs:/usr/src/app/logs \
               altairharbor.duckdns.org/$APP_NAME/$APP_NAME:$NODE_ENV
