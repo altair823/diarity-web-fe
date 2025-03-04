@@ -92,7 +92,7 @@ export function PostSummaryBox({ post }: { post: Post }) {
         'bg-gray-200 pt-2 pr-4 pl-4 pb-4 lg:pr-6 lg:pl-6 rounded-xl mb-6 cursor-pointer hover:bg-gray-100'
       }
       onClick={() => {
-        window.location.href = `/posts/${post.postId}`
+        window.location.href = `/posts/${post.id}`
       }}
     >
       <div className='flex flex-col'>
@@ -120,7 +120,7 @@ export function PostSummaryBox({ post }: { post: Post }) {
           {/*Likes*/}
           <LikeButton
             likesCount={post.likesCount}
-            postId={post.postId.toString()}
+            postId={post.id.toString()}
           />
           {/*Comments*/}
           <CommentButton commentsCount={post.commentsCount} />
@@ -195,7 +195,7 @@ export function PostDetailBox({ post }: { post: Post }) {
             {/*Likes*/}
             <LikeButton
               likesCount={post.likesCount}
-              postId={post.postId.toString()}
+              postId={post.id.toString()}
               toggled={post.isLiked}
             />
             {/*Comments*/}

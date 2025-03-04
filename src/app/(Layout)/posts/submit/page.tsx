@@ -33,6 +33,7 @@ function PostButton({
       </button>
     )
   }
+  const userEmail = useUser.getState().email!
   return (
     <button
       className='w-16 h-9 text-white bg-purple-500 rounded-2xl text-md'
@@ -40,7 +41,7 @@ function PostButton({
         createPost({
           title: titleEditor!.getHTML(),
           content: bodyEditor!.getHTML(),
-          authorEmail: 'test@gmail.com',
+          authorEmail: userEmail,
         }).then(() => {
           // redirect to index page
           window.location.href = '/'
