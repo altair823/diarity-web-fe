@@ -10,8 +10,7 @@ export interface Post {
   title: string
   createdAt: Date
   updatedAt: Date
-  authorEmail: string
-  authorDisplayName: string
+  author: Author
   content: string
   images: string[]
   link: string
@@ -19,6 +18,15 @@ export interface Post {
   likesCount: number
   commentsCount: number
   isLiked: boolean
+}
+
+export interface Author {
+  id: number
+  email: string
+  name: string
+  picture: string
+  role: string
+  displayName: string
 }
 
 export default function Home() {

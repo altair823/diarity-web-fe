@@ -77,13 +77,13 @@ export function PostSummaryBox({ post }: { post: Post }) {
   const content = DOMPurify.sanitize(post.content, {
     USE_PROFILES: { html: true },
   })
-  const author = DOMPurify.sanitize(post.authorDisplayName, {
+  const author = DOMPurify.sanitize(post.author.displayName, {
     USE_PROFILES: { html: true },
   })
   const createdAt = new Date(post.createdAt)
   const handleAuthorClick = (event: React.MouseEvent) => {
     event.stopPropagation()
-    window.location.href = `/users/${post.authorEmail}`
+    window.location.href = `/users/${post.author.email}`
   }
   console.log(post)
   return (
@@ -135,12 +135,12 @@ export function PostDetailBox({ post }: { post: Post }) {
   const content = DOMPurify.sanitize(post.content, {
     USE_PROFILES: { html: true },
   })
-  const author = DOMPurify.sanitize(post.authorDisplayName, {
+  const author = DOMPurify.sanitize(post.author.displayName, {
     USE_PROFILES: { html: true },
   })
   const handleAuthorClick = (event: React.MouseEvent) => {
     event.stopPropagation()
-    window.location.href = `/users/${post.authorEmail}`
+    window.location.href = `/users/${post.author.email}`
   }
   console.log(post)
   return (
