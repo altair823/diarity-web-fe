@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect } from 'react'
-import { useUser } from '@/context/UserContext'
 import { Editor, EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { Placeholder } from '@tiptap/extension-placeholder'
@@ -14,6 +13,7 @@ import list_icon from '/public/icons/list_icon.svg'
 import numbered_list_icon from '/public/icons/numbered_list_icon.svg'
 import add_link_icon from '/public/icons/add_link_icon.svg'
 import { redirectTo } from '@/app/common'
+import { useUser } from '@/store/authStore'
 
 function PostButton({
   titleEditor,
@@ -33,6 +33,7 @@ function PostButton({
       </button>
     )
   }
+  const userEmail = useUser.getState().email!
   return (
     <button
       className='w-16 h-9 text-white bg-purple-500 rounded-2xl text-md'
@@ -40,7 +41,7 @@ function PostButton({
         createPost({
           title: titleEditor!.getHTML(),
           content: bodyEditor!.getHTML(),
-          authorEmail: 'test@gmail.com',
+          authorEmail: userEmail,
         }).then(() => {
           // redirect to index page
           window.location.href = '/'
@@ -145,13 +146,12 @@ function BodyEditor(content: string) {
 function NewPost() {
   const titleEditor = TitleEditor('')
   const bodyEditor = BodyEditor('')
-  const { loginInfo } = useUser()
 
   useEffect(() => {
-    if (loginInfo?.status !== 'success') {
+    if (useUser.getState().isLogin === false) {
       redirectTo('/login')
     }
-  }, [loginInfo])
+  }, [])
 
   return (
     <div className={'w-screen lg:w-full p-4'}>

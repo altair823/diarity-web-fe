@@ -1,11 +1,10 @@
-import { useUser } from '@/context/UserContext'
 import Image from 'next/image'
 import defaultProfile from '/public/default_profile_image.svg'
 import { Logout } from '@/app/auth'
 import { useState } from 'react'
+import { useUser } from '@/store/authStore'
 
 export function Profile() {
-  const { loginInfo } = useUser()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const toggleMenu = () => {
@@ -15,7 +14,7 @@ export function Profile() {
   return (
     <div className='relative'>
       <Image
-        src={loginInfo?.user.picture || defaultProfile}
+        src={useUser.getState().picture || defaultProfile}
         alt='Profile Picture'
         width={30}
         height={30}

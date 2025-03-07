@@ -1,5 +1,6 @@
 import { LoginButton } from '@/app/auth'
-import { useUser } from '@/context/UserContext'
+import { useUser } from '@/store/authStore'
+import { useEffect, useState } from 'react'
 
 function LandingBanner() {
   return (
@@ -25,6 +26,15 @@ function Sidebar() {
 }
 
 export function ConditionalSidebar() {
-  const { loginInfo } = useUser()
-  return loginInfo?.status !== 'success' ? <LandingBanner /> : <Sidebar />
+  const [loading, setLoading] = useState(true)
+  const user = useUser((state) => state)
+  useEffect(() => {
+    setLoading(false)
+  }, [])
+
+  if (loading) {
+    return null // or return a loading indicator
+  }
+
+  return user.isLogin ? <Sidebar /> : <LandingBanner />
 }

@@ -2,7 +2,6 @@
 
 import '../globals.css'
 import React from 'react'
-import { UserProvider } from '@/context/UserContext'
 import { enFont, koFont } from '@/app/font'
 import Head from 'next/head'
 
@@ -22,9 +21,7 @@ export default function NolayoutLayout({
         `}</style>
         <title>Diarity</title>
       </Head>
-      <body>
-        <UserProvider>{children}</UserProvider>
-      </body>
+      <body>{children}</body>
     </html>
   )
 }
