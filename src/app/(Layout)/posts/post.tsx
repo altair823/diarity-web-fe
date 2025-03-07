@@ -5,48 +5,56 @@ import DOMPurify from 'dompurify'
 import Image from 'next/image'
 
 import arrow_back from '/public/icons/arrow_back.svg'
-import React from 'react'
-import { like } from '@/apiRequests/like'
+import React, { useState } from 'react'
+import { like, unlike } from '@/apiRequests/like'
 
 function LikeButton({
   likesCount,
   postId,
-  toggled,
+  initialLiked,
 }: {
   likesCount: number
   postId: string
-  toggled?: boolean
+  initialLiked: boolean
 }) {
-  if (!toggled) {
-    return (
-      <div
-        className={
-          'flex flex-row gap-1 hover:bg-purple-500 p-2 pt-1 pb-1 rounded-full group'
-        }
-        onClick={(event) => {
-          event.stopPropagation()
-          like(postId).then((res) => {
-            console.log(res)
-            window.location.reload()
-          })
-        }}
-      >
-        <svg
-          className={'fill-current group-hover:text-white h-6 w-6'}
-          viewBox={'0 0 18 18'}
-        >
-          <path d='M13.5 15.75H5.25V6L10.5.75l.938.938c.087.087.159.206.215.356.056.15.085.293.085.431v.262L10.913 6h4.837c.4 0 .75.15 1.05.45.3.3.45.65.45 1.05V9c0 .088-.012.181-.038.281-.024.1-.05.194-.075.281l-2.25 5.288c-.112.25-.3.463-.562.638a1.465 1.465 0 0 1-.825.262Zm-6.75-1.5h6.75L15.75 9V7.5H9l1.012-4.125L6.75 6.638v7.612ZM5.25 6v1.5H3v6.75h2.25v1.5H1.5V6h3.75Z' />
-        </svg>
-        <p
-          className={'text-md font-bold text-black group-hover:text-white ml-1'}
-        >
-          {likesCount}
-        </p>
-      </div>
-    )
-  } else {
-    return null
+  const [isLiked, setIsLiked] = useState(initialLiked)
+  const [count, setCount] = useState(likesCount)
+
+  const handleLike = async (event: React.MouseEvent) => {
+    event.stopPropagation()
+    if (isLiked) {
+      await unlike(postId)
+      setCount(count - 1)
+    } else {
+      await like(postId)
+      setCount(count + 1)
+    }
+    setIsLiked(!isLiked)
   }
+
+  return (
+    <div
+      className={`flex flex-row gap-1
+        ${isLiked ? 'text-white bg-purple-500 hover:bg-purple-400' : 'hover:bg-purple-400'} 
+         p-2 pt-1 pb-1 rounded-full group`}
+      onClick={handleLike}
+    >
+      <svg
+        className={`fill-current group-hover:text-white
+         h-6 w-6`}
+        viewBox={'0 0 18 18'}
+      >
+        <path d='M13.5 15.75H5.25V6L10.5.75l.938.938c.087.087.159.206.215.356.056.15.085.293.085.431v.262L10.913 6h4.837c.4 0 .75.15 1.05.45.3.3.45.65.45 1.05V9c0 .088-.012.181-.038.281-.024.1-.05.194-.075.281l-2.25 5.288c-.112.25-.3.463-.562.638a1.465 1.465 0 0 1-.825.262Zm-6.75-1.5h6.75L15.75 9V7.5H9l1.012-4.125L6.75 6.638v7.612ZM5.25 6v1.5H3v6.75h2.25v1.5H1.5V6h3.75Z' />
+      </svg>
+      <p
+        className={`text-md font-bold
+        ${isLiked ? 'text-white' : 'text-black group-hover:text-white'} 
+        ml-1`}
+      >
+        {count}
+      </p>
+    </div>
+  )
 }
 
 function CommentButton({ commentsCount }: { commentsCount: number }) {
@@ -85,7 +93,6 @@ export function PostSummaryBox({ post }: { post: Post }) {
     event.stopPropagation()
     window.location.href = `/users/${post.author.email}`
   }
-  console.log(post)
   return (
     <div
       className={
@@ -121,6 +128,7 @@ export function PostSummaryBox({ post }: { post: Post }) {
           <LikeButton
             likesCount={post.likesCount}
             postId={post.id.toString()}
+            initialLiked={post.isLiked}
           />
           {/*Comments*/}
           <CommentButton commentsCount={post.commentsCount} />
@@ -196,7 +204,7 @@ export function PostDetailBox({ post }: { post: Post }) {
             <LikeButton
               likesCount={post.likesCount}
               postId={post.id.toString()}
-              toggled={post.isLiked}
+              initialLiked={post.isLiked}
             />
             {/*Comments*/}
             <CommentButton commentsCount={post.commentsCount} />

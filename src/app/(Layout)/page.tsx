@@ -50,8 +50,6 @@ export default function Home() {
   if (isError) {
     return <div>Error</div>
   }
-
-  console.log(posts)
   const content = sanitizedPosts.map((post: Post) => (
     <div key={post.id}>
       <div className={'m-4'}>
