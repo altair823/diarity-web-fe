@@ -96,7 +96,7 @@ export function PostSummaryBox({ post }: { post: Post }) {
   return (
     <div
       className={
-        'bg-gray-200 pt-2 pr-4 pl-4 pb-4 lg:pr-6 lg:pl-6 rounded-xl mb-6 cursor-pointer hover:bg-gray-100'
+        'bg-gray-200 pt-2 pr-4 pl-4 pb-4 lg:pr-6 lg:pl-6 rounded-xl mb-6 cursor-pointer hover:shadow-lg'
       }
       onClick={() => {
         window.location.href = `/posts/${post.id}`
