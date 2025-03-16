@@ -50,3 +50,21 @@ export function useGetPost(id: string) {
   )
   return { post: data, isError: error, isLoading }
 }
+
+export function createComment(
+  content: string,
+  postId: string,
+  parentCommentId?: string
+) {
+  return fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/posts/${postId}/new-comments`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ content, parentCommentId }),
+      credentials: 'include',
+    }
+  )
+}

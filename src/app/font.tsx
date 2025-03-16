@@ -3,12 +3,12 @@ import localFont from 'next/font/local'
 const koFont = localFont({
   src: [
     {
-      path: './fonts/GothicA1-Medium.ttf',
+      path: './fonts/42dotSans-Medium.ttf',
       style: 'normal',
       weight: '500',
     },
     {
-      path: './fonts/GothicA1-Bold.ttf',
+      path: './fonts/42dotSans-Bold.ttf',
       style: 'normal',
       weight: '700',
     },

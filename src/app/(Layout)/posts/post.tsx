@@ -8,6 +8,7 @@ import arrow_back from '/public/icons/arrow_back.svg'
 import React, { useState } from 'react'
 import { like, unlike } from '@/apiRequests/like'
 import { useUser } from '@/store/authStore'
+import { CommentBox } from '@/app/(Layout)/posts/comments/comments'
 
 function LikeButton({
   likesCount,
@@ -157,7 +158,6 @@ export function PostDetailBox({ post }: { post: Post }) {
     event.stopPropagation()
     window.location.href = `/users/${post.author.email}`
   }
-  console.log(post)
   return (
     <div>
       <div className={'bg-gray-200 p-4 pt-2 lg:pr-6 lg:pl-6 rounded-xl m-4'}>
@@ -217,6 +217,9 @@ export function PostDetailBox({ post }: { post: Post }) {
             <CommentButton commentsCount={post.commentsCount} />
           </div>
         </div>
+      </div>
+      <div className={'flex items-center justify-center m-4'}>
+        <CommentBox commentsCount={0} postId={post.id.toString()}></CommentBox>
       </div>
     </div>
   )
