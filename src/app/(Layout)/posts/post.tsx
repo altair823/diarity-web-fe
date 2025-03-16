@@ -7,6 +7,7 @@ import Image from 'next/image'
 import arrow_back from '/public/icons/arrow_back.svg'
 import React, { useState } from 'react'
 import { like, unlike } from '@/apiRequests/like'
+import { useUser } from '@/store/authStore'
 
 function LikeButton({
   likesCount,
@@ -22,6 +23,12 @@ function LikeButton({
 
   const handleLike = async (event: React.MouseEvent) => {
     event.stopPropagation()
+
+    if (!useUser.getState().isLogin) {
+      window.location.href = '/login'
+      return
+    }
+
     if (isLiked) {
       await unlike(postId)
       setCount(count - 1)
