@@ -68,3 +68,15 @@ export function createComment(
     }
   )
 }
+
+export function useGetAllComments(postId: string) {
+  const { data, error, isLoading } = useSWR(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/posts/${postId}/comments`,
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
+  )
+  return { comments: data, isError: error, isLoading }
+}

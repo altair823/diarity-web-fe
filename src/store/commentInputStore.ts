@@ -1,11 +1,11 @@
 import { create } from 'zustand'
 
-interface CommentState {
+interface CommentInputState {
   text: string
   setText: (text: string) => void
 }
 
-export const useComment = create<CommentState>((set) => ({
+export const useCommentInput = create<CommentInputState>((set) => ({
   text: '',
   setText: (text) => set({ text }),
 }))
