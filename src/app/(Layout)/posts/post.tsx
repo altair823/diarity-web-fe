@@ -5,28 +5,45 @@ import DOMPurify from 'dompurify'
 import Image from 'next/image'
 
 import arrow_back from '/public/icons/arrow_back.svg'
-import React, { useState } from 'react'
-import { like, unlike } from '@/apiRequests/like'
+import React, { useEffect, useState } from 'react'
+import { likePost, unlikePost } from '@/apiRequests/likePost'
+import {
+  Comment,
+  CommentBox,
+  CommentInputBox,
+} from '@/app/(Layout)/posts/comments/comments'
+import { useGetAllComments } from '@/apiRequests/post'
+import { useUser } from '@/store/authStore'
 
 function LikeButton({
   likesCount,
   postId,
   initialLiked,
+  likeCallback,
+  unlikeCallback,
 }: {
   likesCount: number
   postId: string
   initialLiked: boolean
+  likeCallback: (postId: string) => Promise<Response>
+  unlikeCallback: (postId: string) => Promise<Response>
 }) {
   const [isLiked, setIsLiked] = useState(initialLiked)
   const [count, setCount] = useState(likesCount)
 
   const handleLike = async (event: React.MouseEvent) => {
     event.stopPropagation()
+
+    if (!useUser.getState().isLogin) {
+      window.location.href = '/login'
+      return
+    }
+
     if (isLiked) {
-      await unlike(postId)
+      await unlikeCallback(postId)
       setCount(count - 1)
     } else {
-      await like(postId)
+      await likeCallback(postId)
       setCount(count + 1)
     }
     setIsLiked(!isLiked)
@@ -35,7 +52,7 @@ function LikeButton({
   return (
     <div
       className={`flex flex-row gap-1
-        ${isLiked ? 'text-white bg-purple-500 hover:bg-purple-400' : 'hover:bg-purple-400'} 
+        ${isLiked ? 'text-white bg-purple-500 hover:bg-purple-400' : ' bg-gray-200 hover:bg-purple-400'} 
          p-2 pt-1 pb-1 rounded-full group`}
       onClick={handleLike}
     >
@@ -61,7 +78,7 @@ function CommentButton({ commentsCount }: { commentsCount: number }) {
   return (
     <div
       className={
-        'flex flex-row gap-1 hover:bg-purple-500 p-2 pt-1 pb-1 rounded-full group'
+        'flex flex-row gap-1 bg-gray-200 hover:bg-purple-500 p-2 pt-1 pb-1 rounded-full group'
       }
       onClick={(event) => {
         event.stopPropagation()
@@ -129,6 +146,8 @@ export function PostSummaryBox({ post }: { post: Post }) {
             likesCount={post.likesCount}
             postId={post.id.toString()}
             initialLiked={post.isLiked}
+            likeCallback={likePost}
+            unlikeCallback={unlikePost}
           />
           {/*Comments*/}
           <CommentButton commentsCount={post.commentsCount} />
@@ -150,11 +169,24 @@ export function PostDetailBox({ post }: { post: Post }) {
     event.stopPropagation()
     window.location.href = `/users/${post.author.email}`
   }
-  console.log(post)
+  const { comments, isError, isLoading } = useGetAllComments(post.id.toString())
+  const [sanitizedComments, setSanitizedComments] = useState<Comment[]>([])
+  useEffect(() => {
+    if (comments && !isError && !isLoading) {
+      const sanitized = comments.map((comment: Comment) => ({
+        ...comment,
+        content: DOMPurify.sanitize(comment.content),
+        createdAt: new Date(comment.createdAt),
+        modifiedAt: new Date(comment.createdAt),
+      }))
+      setSanitizedComments(sanitized)
+    }
+  }, [comments, isError, isLoading])
+
   return (
     <div>
-      <div className={'bg-gray-200 p-4 pt-2 lg:pr-6 lg:pl-6 rounded-xl m-4'}>
-        <div className='flex flex-col'>
+      <div className={'bg-gray-100 lg:pr-6 lg:pl-6 rounded-xl m-4'}>
+        <div className='flex flex-col p-6'>
           <div className={'flex justify-between'}>
             <div className={'flex items-center'}>
               <div className={'-ml-1 lg:-ml-3 mr-2'}>
@@ -205,10 +237,18 @@ export function PostDetailBox({ post }: { post: Post }) {
               likesCount={post.likesCount}
               postId={post.id.toString()}
               initialLiked={post.isLiked}
+              likeCallback={likePost}
+              unlikeCallback={unlikePost}
             />
             {/*Comments*/}
             <CommentButton commentsCount={post.commentsCount} />
           </div>
+        </div>
+        <div className={'flex items-center justify-center m-4'}>
+          <CommentInputBox postId={post.id.toString()} />
+        </div>
+        <div className={'flex items-center justify-center m-4'}>
+          <CommentBox comments={sanitizedComments} />
         </div>
       </div>
     </div>

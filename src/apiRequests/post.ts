@@ -50,3 +50,33 @@ export function useGetPost(id: string) {
   )
   return { post: data, isError: error, isLoading }
 }
+
+export function createComment(
+  content: string,
+  postId: string,
+  parentCommentId?: string
+) {
+  return fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/posts/${postId}/new-comments`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ content, parentCommentId }),
+      credentials: 'include',
+    }
+  )
+}
+
+export function useGetAllComments(postId: string) {
+  const { data, error, isLoading } = useSWR(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/posts/${postId}/comments`,
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
+  )
+  return { comments: data, isError: error, isLoading }
+}
