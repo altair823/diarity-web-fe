@@ -69,8 +69,8 @@ jobs:
             export APP_NAME=${{ inputs.APP_NAME }}
             export NODE_ENV=${{ inputs.NODE_ENV }}
             export APP_PATH=${{ inputs.APP_PATH }}
-            docker login altairharbor.duckdns.org -u ${{ secrets.HARBOR_USERNAME }} -p ${{ secrets.HARBOR_PASSWORD }}
-            docker pull altairharbor.duckdns.org/$APP_NAME/$APP_NAME:$NODE_ENV
+            docker login harbor.altair823.xyz -u ${{ secrets.HARBOR_USERNAME }} -p ${{ secrets.HARBOR_PASSWORD }}
+            docker pull harbor.altair823.xyz/$APP_NAME/$APP_NAME:$NODE_ENV
             docker stop $APP_NAME || true
             docker rm $APP_NAME || true
             docker run -d \
@@ -78,7 +78,7 @@ jobs:
               --restart always \
               -p 3000:3000 \
               -v $APP_PATH/logs:/usr/src/app/logs \
-              altairharbor.duckdns.org/$APP_NAME/$APP_NAME:$NODE_ENV
+              harbor.altair823.xyz/$APP_NAME/$APP_NAME:$NODE_ENV
             docker image prune -f
           
       - name: Notify Slack
