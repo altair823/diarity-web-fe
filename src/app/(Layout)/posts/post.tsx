@@ -280,10 +280,7 @@ export function PostDetailBox({ post }: { post: Post }) {
               unlikeCallback={unlikePost}
             />
             {/*Comments*/}
-            <CommentButtonInDetail
-              commentsCount={post.commentsCount}
-              targetPostId={post.id.toString()}
-            />
+            <CommentButtonInDetail commentsCount={post.commentsCount} />
           </div>
         </div>
         <div
