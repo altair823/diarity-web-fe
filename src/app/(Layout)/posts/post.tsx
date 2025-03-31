@@ -6,7 +6,7 @@ import Image from 'next/image'
 
 import arrow_back from '/public/icons/arrow_back.svg'
 import React, { useEffect, useState } from 'react'
-import { likePost, unlikePost } from '@/apiRequests/likePost'
+import { like, unlikePost } from '@/apiRequests/like'
 import {
   Comment,
   CommentBox,
@@ -74,7 +74,13 @@ function LikeButton({
   )
 }
 
-function CommentButton({ commentsCount }: { commentsCount: number }) {
+function CommentButtonInSummary({
+  commentsCount,
+  targetPostId,
+}: {
+  commentsCount: number
+  targetPostId: string
+}) {
   return (
     <div
       className={
@@ -82,6 +88,36 @@ function CommentButton({ commentsCount }: { commentsCount: number }) {
       }
       onClick={(event) => {
         event.stopPropagation()
+        window.location.href = `/posts/${targetPostId}`
+      }}
+    >
+      <svg
+        className={'fill-current group-hover:text-white h-6 w-6'}
+        viewBox={'0 0 18 18'}
+      >
+        <path d='M1.5 16.5V3c0-.413.147-.766.44-1.06.294-.293.647-.44 1.06-.44h12c.412 0 .766.147 1.06.44.293.294.44.647.44 1.06v9c0 .412-.147.766-.44 1.06-.294.293-.647.44-1.06.44H4.5l-3 3ZM3.862 12H15V3H3v9.844L3.862 12Z' />
+      </svg>
+      <p className={'text-md font-bold text-black group-hover:text-white ml-1'}>
+        {commentsCount}
+      </p>
+    </div>
+  )
+}
+
+function CommentButtonInDetail({ commentsCount }: { commentsCount: number }) {
+  return (
+    <div
+      className={
+        'flex flex-row gap-1 bg-gray-200 hover:bg-purple-500 p-2 pt-1 pb-1 rounded-full group'
+      }
+      onClick={(event) => {
+        event.stopPropagation()
+        const commentInputBoxTopOffset =
+          document.getElementById('comment-input-box')?.offsetTop
+        window.scrollTo({
+          top: commentInputBoxTopOffset,
+          behavior: 'smooth',
+        })
       }}
     >
       <svg
@@ -146,11 +182,14 @@ export function PostSummaryBox({ post }: { post: Post }) {
             likesCount={post.likesCount}
             postId={post.id.toString()}
             initialLiked={post.isLiked}
-            likeCallback={likePost}
+            likeCallback={like}
             unlikeCallback={unlikePost}
           />
           {/*Comments*/}
-          <CommentButton commentsCount={post.commentsCount} />
+          <CommentButtonInSummary
+            commentsCount={post.commentsCount}
+            targetPostId={post.id.toString()}
+          />
         </div>
       </div>
     </div>
@@ -237,18 +276,24 @@ export function PostDetailBox({ post }: { post: Post }) {
               likesCount={post.likesCount}
               postId={post.id.toString()}
               initialLiked={post.isLiked}
-              likeCallback={likePost}
+              likeCallback={like}
               unlikeCallback={unlikePost}
             />
             {/*Comments*/}
-            <CommentButton commentsCount={post.commentsCount} />
+            <CommentButtonInDetail
+              commentsCount={post.commentsCount}
+              targetPostId={post.id.toString()}
+            />
           </div>
         </div>
-        <div className={'flex items-center justify-center m-4'}>
+        <div
+          className={'flex items-center justify-center m-4'}
+          id={'comment-input-box'}
+        >
           <CommentInputBox postId={post.id.toString()} />
         </div>
         <div className={'flex items-center justify-center m-4'}>
-          <CommentBox comments={sanitizedComments} />
+          <CommentBox postId={post.id} comments={sanitizedComments} />
         </div>
       </div>
     </div>
