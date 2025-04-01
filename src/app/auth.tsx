@@ -21,6 +21,7 @@ async function TryLogin() {
       }
     )
     if (refreshResult.status === 201) {
+      window.location.reload()
       return TryLogin()
     }
     return null
