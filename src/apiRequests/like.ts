@@ -1,4 +1,4 @@
-export function likePost(postId: string) {
+export function like(postId: string) {
   return fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/posts/${postId}/like`, {
     method: 'POST',
     credentials: 'include',
@@ -12,9 +12,9 @@ export function unlikePost(postId: string) {
   })
 }
 
-export function likeComment(commentId: string) {
+export function likeComment(postId: string, commentId: string) {
   return fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/comments/${commentId}/like`,
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/posts/${postId}/comments/${commentId}/like`,
     {
       method: 'POST',
       credentials: 'include',
@@ -22,9 +22,9 @@ export function likeComment(commentId: string) {
   )
 }
 
-export function unlikeComment(commentId: string) {
+export function unlikeComment(postId: string, commentId: string) {
   return fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/comments/${commentId}/like`,
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/posts/${postId}/comments/${commentId}/like`,
     {
       method: 'DELETE',
       credentials: 'include',
