@@ -9,20 +9,20 @@ const fetcher = (url: string) =>
   }).then((res) => res.json())
 
 export function createPost({
+  bookTitle,
   title,
   content,
-  authorEmail,
 }: {
+  bookTitle: string
   title: string
   content: string
-  authorEmail: string
 }) {
   return fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/posts`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ title, content, authorEmail }),
+    body: JSON.stringify({ bookTitle, title, content }),
     credentials: 'include',
   })
 }
