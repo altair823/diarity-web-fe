@@ -8,7 +8,7 @@ interface UserInfo {
 }
 
 interface UserState {
-  isLogin: boolean
+  isLogin: boolean | null
   login: (user: UserInfo) => void
   logout: () => void
 
@@ -41,7 +41,7 @@ export const useUser = create<UserState>((set) => {
         picture: null,
       })
     },
-    isLogin: false,
+    isLogin: null,
     email: null,
     name: null,
     displayName: null,

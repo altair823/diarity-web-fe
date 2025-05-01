@@ -9,11 +9,18 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@schedule-x/drag-and-drop": "^2.27.0",
+    "@schedule-x/event-modal": "^2.27.0",
+    "@schedule-x/events-service": "^2.27.0",
+    "@schedule-x/react": "^2.27.0",
+    "@schedule-x/resize": "^2.27.0",
+    "@schedule-x/theme-default": "^2.27.0",
     "@tiptap/extension-link": "^2.10.4",
     "@tiptap/extension-placeholder": "^2.10.4",
     "@tiptap/pm": "^2.10.4",
     "@tiptap/react": "^2.10.4",
     "@tiptap/starter-kit": "^2.10.4",
+    "classnames": "^2.5.1",
     "cookies-next": "^5.0.2",
     "dompurify": "^3.2.3",
     "next": "^15.1.5",

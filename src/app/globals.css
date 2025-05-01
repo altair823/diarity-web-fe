@@ -43,6 +43,32 @@ span {
   font-family: var(--font-ko), serif;
 }
 
+#task-red {
+  @apply bg-red-200;
+}
+#task-orange {
+  @apply bg-orange-200;
+}
+#task-yellow {
+  @apply bg-yellow-200;
+}
+#task-green {
+  @apply bg-green-200;
+}
+#task-blue {
+  @apply bg-blue-200;
+}
+#task-purple {
+  @apply bg-purple-200;
+}
+#task-pink {
+  @apply bg-pink-200;
+}
+#task-gray {
+  @apply bg-gray-200;
+}
+
+
 
 /* large~ */
 @media (min-width: 1024px) {
