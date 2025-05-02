@@ -12,7 +12,7 @@ import { useUser } from '@/store/authStore'
 
 export function NavBar() {
   const [categoryOpen, setCategoryOpen] = useState(false)
-  const currentCategory = 'home' // Set the current category dynamically
+  const currentCategory = 'home'
   return (
     <header className='w-screen'>
       <nav className='bg-gray-300 border-gray-200'>
@@ -59,7 +59,7 @@ export function NavBar() {
       <div
         className={`${categoryOpen ? 'block' : 'hidden'} lg:hidden bg-gray-300`}
       >
-        <Category isSmallScreen={true} currentCategory={currentCategory} />
+        <Category isSmallScreen={true} />
       </div>
     </header>
   )

@@ -134,6 +134,9 @@ function CommentButtonInDetail({ commentsCount }: { commentsCount: number }) {
 }
 
 export function PostSummaryBox({ post }: { post: Post }) {
+  const bookTitle = DOMPurify.sanitize(post.bookTitle, {
+    USE_PROFILES: { html: false },
+  })
   const title = DOMPurify.sanitize(post.title, { USE_PROFILES: { html: true } })
   const content = DOMPurify.sanitize(post.content, {
     USE_PROFILES: { html: true },
@@ -158,19 +161,25 @@ export function PostSummaryBox({ post }: { post: Post }) {
       <div className='flex flex-col'>
         <div className={'flex justify-between items-start'}>
           <h1
-            className={'font-bold text-lg break-words'}
+            className={'font-bold text-lg break-words pt-2 '}
             dangerouslySetInnerHTML={{ __html: title }}
           />
-          <p className={'text-xs text-gray-500 mt-4 min-w-16'}>
-            {createdAt.toLocaleDateString()}
-          </p>
+          <div className={'flex items-center justify-center mt-4'}>
+            <p
+              dangerouslySetInnerHTML={{ __html: author }}
+              className={
+                'text-xs w-fit text-gray-500 cursor-pointer mr-4 hover:text-purple-500'
+              }
+              onClick={handleAuthorClick}
+            />
+            <p className={'text-xs text-gray-500 min-w-16'}>
+              {createdAt.toLocaleDateString()}
+            </p>
+          </div>
         </div>
         <p
-          dangerouslySetInnerHTML={{ __html: author }}
-          className={
-            'pt-2 text-xs w-fit text-gray-500 cursor-pointer hover:text-purple-500'
-          }
-          onClick={handleAuthorClick}
+          dangerouslySetInnerHTML={{ __html: bookTitle }}
+          className={'pt-4 break-words'}
         />
         <p
           dangerouslySetInnerHTML={{ __html: content }}
@@ -265,6 +274,10 @@ export function PostDetailBox({ post }: { post: Post }) {
               'pt-4 text-xs w-fit text-gray-500 cursor-pointer hover:text-purple-500'
             }
             onClick={handleAuthorClick}
+          />
+          <p
+            dangerouslySetInnerHTML={{ __html: post.bookTitle }}
+            className={'pt-4 break-words font-bold'}
           />
           <p
             dangerouslySetInnerHTML={{ __html: content }}

@@ -21,8 +21,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const currentCategory = 'home' // Set the current category dynamically
-
   return (
     <html lang='ko' className={`${koFont.variable} ${enFont.variable}`}>
       <Head>
@@ -40,10 +38,7 @@ export default function RootLayout({
             <NavBar />
             <main className='flex-grow flex lg:w-full justify-evenly'>
               <div className='hidden lg:flex flex-col flex-none w-1/4 max-w-64'>
-                <Category
-                  isSmallScreen={false}
-                  currentCategory={currentCategory}
-                />
+                <Category isSmallScreen={false} />
               </div>
               <div className='flex flex-col flex-initial w-screen lg:w-1/2 lg:p-4 lg:max-w-screen-md'>
                 {children}

@@ -7,6 +7,7 @@ import { PostSummaryBox } from '@/app/(Layout)/posts/post'
 
 export interface Post {
   id: number
+  bookTitle: string
   title: string
   createdAt: Date
   updatedAt: Date

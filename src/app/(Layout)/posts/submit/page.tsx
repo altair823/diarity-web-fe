@@ -16,16 +16,18 @@ import { redirectTo } from '@/app/common'
 import { useUser } from '@/store/authStore'
 
 function PostButton({
+  bookNameEditor,
   titleEditor,
   bodyEditor,
 }: {
+  bookNameEditor: Editor | null
   titleEditor: Editor | null
   bodyEditor: Editor | null
 }) {
-  if (!titleEditor || !bodyEditor) {
+  if (!titleEditor || !bodyEditor || !bookNameEditor) {
     return <div></div>
   }
-  if (titleEditor?.isEmpty || bodyEditor?.isEmpty) {
+  if (titleEditor?.isEmpty || bodyEditor?.isEmpty || bookNameEditor?.isEmpty) {
     // deactivate button
     return (
       <button className='w-16 h-9 text-white bg-gray-300 rounded-2xl text-md'>
@@ -33,16 +35,21 @@ function PostButton({
       </button>
     )
   }
-  const userEmail = useUser.getState().email!
   return (
     <button
       className='w-16 h-9 text-white bg-purple-500 rounded-2xl text-md'
-      onClick={() => {
-        createPost({
+      onClick={async () => {
+        await createPost({
+          bookTitle: bookNameEditor!.getText(),
           title: titleEditor!.getHTML(),
           content: bodyEditor!.getHTML(),
-          authorEmail: userEmail,
-        }).then(() => {
+        }).then((res) => {
+          if (!res.ok) {
+            alert(
+              '게시물 작성에 실패했습니다. 내용을 다른 곳에 저장해두시고 잠시 후 다시 시도해 주세요!'
+            )
+            return
+          }
           // redirect to index page
           window.location.href = '/'
         })
@@ -124,6 +131,25 @@ function TitleEditor(content: string) {
   })
 }
 
+function BookNameEditor(content: string) {
+  return useEditor({
+    extensions: [
+      StarterKit,
+      Placeholder.configure({
+        placeholder: '책 제목을 입력하세요',
+      }),
+    ],
+    content: content,
+    editorProps: {
+      attributes: {
+        class:
+          'text-lg h-12 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-300',
+      },
+    },
+    immediatelyRender: false,
+  })
+}
+
 function BodyEditor(content: string) {
   return useEditor({
     extensions: [
@@ -145,10 +171,11 @@ function BodyEditor(content: string) {
 
 function NewPost() {
   const titleEditor = TitleEditor('')
+  const bookNameEditor = BookNameEditor('')
   const bodyEditor = BodyEditor('')
 
   useEffect(() => {
-    if (useUser.getState().isLogin === false) {
+    if (!useUser.getState().isLogin) {
       redirectTo('/login')
     }
   }, [])
@@ -157,6 +184,9 @@ function NewPost() {
     <div className={'w-screen lg:w-full p-4'}>
       <div className={'mt-2 mb-10 '}>
         <p className={'mb-8 text-2xl'}>글쓰기</p>
+        <div className={'mb-4'}>
+          <EditorContent editor={bookNameEditor} />
+        </div>
         <EditorContent editor={titleEditor} />
       </div>
 
@@ -169,7 +199,11 @@ function NewPost() {
       </div>
 
       <div className={'mt-2 flex justify-end'}>
-        <PostButton titleEditor={titleEditor} bodyEditor={bodyEditor} />
+        <PostButton
+          bookNameEditor={bookNameEditor}
+          titleEditor={titleEditor}
+          bodyEditor={bodyEditor}
+        />
       </div>
     </div>
   )
