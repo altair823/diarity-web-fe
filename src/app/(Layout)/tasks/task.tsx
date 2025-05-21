@@ -13,7 +13,6 @@ import play_icon from '/public/icons/play_icon.svg'
 import pause_icon from '/public/icons/pause_icon.svg'
 import Image from 'next/image'
 import { useTaskStore } from '@/store/taskStore'
-import { useEffect } from 'react'
 
 export interface Task {
   id: number
@@ -32,9 +31,7 @@ export function TaskBar() {
     color: 'red',
   }
   const { task, setTask, setOnProgress } = useTaskStore()
-  useEffect(() => {
-    setTask(testTask)
-  }, [])
+  setTask(testTask)
   return (
     <div
       className={'m-4 lg:mr-0 lg:ml-0 p-4 rounded-xl'}
