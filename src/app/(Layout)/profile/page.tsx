@@ -2,15 +2,23 @@
 
 import { useGetUserProfile } from '@/apiRequests/task'
 import { useUser } from '@/store/authStore'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 
 export default function ProfilePage() {
+  const router = useRouter()
   const { userProfile, isLoading } = useGetUserProfile()
-  if (!useUser.getState().isLogin) {
-    window.location.href = '/login'
-    return null
-  }
-  if (isLoading) {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+    if (!useUser.getState().isLogin) {
+      router.push('/login')
+    }
+  }, [router])
+
+  if (!mounted || isLoading) {
     return <div>Loading...</div>
   }
   return (
