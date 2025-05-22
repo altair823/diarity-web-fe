@@ -4,7 +4,7 @@ import diarity_logo from '/public/diarity-logo.svg'
 import new_button from '/public/new.svg'
 import notification_button from '/public/notifications.svg'
 import Link from 'next/link'
-import { LoginButton, TryLogin } from '@/app/auth'
+import { LoginButton } from '@/app/auth'
 import { Category } from '@/app/category'
 import { useEffect, useState } from 'react'
 import { Profile } from '@/app/profile'
@@ -12,7 +12,6 @@ import { useUser } from '@/store/authStore'
 
 export function NavBar() {
   const [categoryOpen, setCategoryOpen] = useState(false)
-  const currentCategory = 'home'
   return (
     <header className='w-screen'>
       <nav className='bg-gray-300 border-gray-200'>

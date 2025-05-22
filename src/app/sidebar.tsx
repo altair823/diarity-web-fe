@@ -1,6 +1,7 @@
 import { LoginButton } from '@/app/auth'
 import { useUser } from '@/store/authStore'
 import { useEffect, useState } from 'react'
+import { useRecentVisited } from '@/store/recentVisitedStore'
 
 function LandingBanner() {
   return (
@@ -14,12 +15,28 @@ function LandingBanner() {
   )
 }
 
-function Sidebar() {
+function RecentVisitedSideBar() {
+  const recentVisited = useRecentVisited().recentVisitedPages
   return (
     <div>
-      <p className={'p-4 mt-5'}>최근 방문</p>
-      <div className='p-4 bg-gray-200 rounded-2xl'>
-        <p>...</p>
+      <p className={'p-4 pb-0 mt-5'}>최근 방문</p>
+      <div className='p-4  rounded-2xl'>
+        <ul className={''}>
+          {recentVisited.map((page, index) => (
+            <li
+              key={index}
+              className='my-4 px-4 py-2 bg-gray-200 hover:shadow-xl cursor-pointer rounded-2xl'
+              onClick={() => {
+                window.location.href = page.url
+              }}
+            >
+              <div>{page.title}</div>
+              <div className='text-sm text-gray-500'>
+                {page.contentSummary}...
+              </div>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   )
@@ -36,5 +53,5 @@ export function ConditionalSidebar() {
     return null // or return a loading indicator
   }
 
-  return user.isLogin ? <Sidebar /> : <LandingBanner />
+  return user.isLogin ? <RecentVisitedSideBar /> : <LandingBanner />
 }

@@ -61,7 +61,7 @@ async function Logout() {
     credentials: 'include',
   })
   useUser.getState().logout()
-
+  useUser.persist.clearStorage()
   // Refresh page
   window.location.href = '/'
 }
