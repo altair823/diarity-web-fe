@@ -1,12 +1,13 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
-const MAX_SUMMARY_LENGTH = 50
+const MAX_SUMMARY_TITLE_LENGTH = 20
+const MAX_SUMMARY_CONTENT_LENGTH = 50
 const MAX_RECENT_PAGES_COUNT = 5
 
 interface RecentVisitedPage {
   url: string
-  title: string
+  titleSummary: string
   contentSummary: string
   timestamp: number
 }
@@ -18,17 +19,30 @@ interface RecentVisitedStore {
   clearPages: () => void
 }
 
+function htmlTaggedToText(html: string) {
+  const doc = new DOMParser().parseFromString(html, 'text/html')
+  return doc.body.textContent || ''
+}
+
 export const useRecentVisited = create(
   persist<RecentVisitedStore>(
     (set) => ({
       recentVisitedPages: [],
       addPage: (page: RecentVisitedPage) =>
         set((state) => {
-          // 페이지가 이미 존재하는지 확인
+          page.titleSummary = htmlTaggedToText(page.titleSummary)
+          page.contentSummary = htmlTaggedToText(page.contentSummary)
           const exists = state.recentVisitedPages.some(
             (p) => p.url === page.url
           )
-          page.contentSummary = page.contentSummary.slice(0, MAX_SUMMARY_LENGTH)
+          if (page.titleSummary.length > MAX_SUMMARY_TITLE_LENGTH) {
+            page.titleSummary =
+              page.titleSummary.slice(0, MAX_SUMMARY_TITLE_LENGTH) + '...'
+          }
+          if (page.contentSummary.length > MAX_SUMMARY_CONTENT_LENGTH) {
+            page.contentSummary =
+              page.contentSummary.slice(0, MAX_SUMMARY_CONTENT_LENGTH) + '...'
+          }
           if (!exists) {
             // 새로운 페이지 추가
             const newPage = { ...page, timestamp: new Date().getTime() }
