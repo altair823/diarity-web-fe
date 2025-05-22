@@ -24,10 +24,14 @@ export function Profile() {
       {isMenuOpen && (
         <div className='absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded-md shadow-lg text-base'>
           <ul>
-            <li className='px-4 py-2 hover:bg-gray-100 cursor-pointer'>
+            <li
+              className='px-4 py-2 hover:bg-gray-100 cursor-pointer'
+              onClick={() => {
+                window.location.href = '/profile'
+              }}
+            >
               프로필
             </li>
-            <li className='px-4 py-2 hover:bg-gray-100 cursor-pointer'>설정</li>
             <li
               className='px-4 py-2 hover:bg-gray-100 cursor-pointer'
               onClick={Logout}

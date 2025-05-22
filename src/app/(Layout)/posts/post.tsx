@@ -14,6 +14,7 @@ import {
 } from '@/app/(Layout)/posts/comments/comments'
 import { useGetAllComments } from '@/apiRequests/post'
 import { useUser } from '@/store/authStore'
+import { useRecentVisited } from '@/store/recentVisitedStore'
 
 function LikeButton({
   likesCount,
@@ -155,6 +156,12 @@ export function PostSummaryBox({ post }: { post: Post }) {
         'bg-gray-200 pt-2 pr-4 pl-4 pb-4 lg:pr-6 lg:pl-6 rounded-xl mb-6 cursor-pointer hover:shadow-lg'
       }
       onClick={() => {
+        useRecentVisited.getState().addPage({
+          url: `/posts/${post.id}`,
+          title: post.title,
+          contentSummary: post.content,
+          timestamp: new Date().getTime(),
+        })
         window.location.href = `/posts/${post.id}`
       }}
     >
@@ -168,7 +175,7 @@ export function PostSummaryBox({ post }: { post: Post }) {
             <p
               dangerouslySetInnerHTML={{ __html: author }}
               className={
-                'text-xs w-fit text-gray-500 cursor-pointer mr-4 hover:text-purple-500'
+                'text-xs w-fit text-gray-500 cursor-pointer mr-4 hover:text-purple-500 whitespace-nowrap'
               }
               onClick={handleAuthorClick}
             />
