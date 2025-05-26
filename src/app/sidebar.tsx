@@ -30,9 +30,9 @@ function RecentVisitedSideBar() {
                 window.location.href = page.url
               }}
             >
-              <div>{page.title}</div>
-              <div className='text-sm text-gray-500'>
-                {page.contentSummary}...
+              <div className={'break-words'}>{page.titleSummary}</div>
+              <div className='text-sm text-gray-500 break-words'>
+                {page.contentSummary}
               </div>
             </li>
           ))}

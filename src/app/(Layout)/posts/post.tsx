@@ -158,7 +158,7 @@ export function PostSummaryBox({ post }: { post: Post }) {
       onClick={() => {
         useRecentVisited.getState().addPage({
           url: `/posts/${post.id}`,
-          title: post.title,
+          titleSummary: post.title,
           contentSummary: post.content,
           timestamp: new Date().getTime(),
         })
