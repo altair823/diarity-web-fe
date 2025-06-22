@@ -7,7 +7,7 @@ import { PostSummaryBox } from '@/app/(Layout)/posts/post'
 import { useRouter } from 'next/navigation'
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-function UserPostsPage({ params }: { params: { userId: string } }) {
+function UserPostsPage({ params }: { params: { userId: Promise<string> } }) {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-expect-error
   const { userId } = use(params)
