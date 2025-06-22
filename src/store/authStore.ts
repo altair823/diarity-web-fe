@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
 export interface UserInfo {
+  id: number
   email: string
   name: string
   role: string
@@ -14,6 +15,7 @@ interface UserStore {
   login: (user: UserInfo) => void
   logout: () => void
 
+  id: number | null
   email: string | null
   name: string | null
   displayName: string | null
@@ -27,6 +29,7 @@ export const useUser = create(
       return {
         login: (user: UserInfo) => {
           set({
+            id: user.id,
             isLogin: true,
             email: user.email,
             name: user.name,
@@ -37,6 +40,7 @@ export const useUser = create(
         },
         logout: () => {
           set({
+            id: null,
             isLogin: false,
             email: null,
             name: null,
@@ -45,6 +49,7 @@ export const useUser = create(
             picture: null,
           })
         },
+        id: null,
         isLogin: null,
         email: null,
         name: null,

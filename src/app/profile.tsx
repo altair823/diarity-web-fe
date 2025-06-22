@@ -11,6 +11,8 @@ export function Profile() {
     setIsMenuOpen(!isMenuOpen)
   }
 
+  const userId = useUser.getState().id
+
   return (
     <div className='relative'>
       <Image
@@ -27,7 +29,7 @@ export function Profile() {
             <li
               className='px-4 py-2 hover:bg-gray-100 cursor-pointer'
               onClick={() => {
-                window.location.href = '/profile'
+                window.location.href = `/users/${userId}`
               }}
             >
               프로필
