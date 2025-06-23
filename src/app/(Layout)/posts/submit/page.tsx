@@ -44,7 +44,11 @@ function PostButton({
           title: titleEditor!.getHTML(),
           content: bodyEditor!.getHTML(),
         }).then((res) => {
+          if (res.status === 403) {
+            alert('권한이 없습니다! 관리자에게 문의해 주세요.')
+          }
           if (!res.ok) {
+            console.log(res)
             alert(
               '게시물 작성에 실패했습니다. 내용을 다른 곳에 저장해두시고 잠시 후 다시 시도해 주세요!'
             )
@@ -177,6 +181,10 @@ function NewPost() {
   useEffect(() => {
     if (!useUser.getState().isLogin) {
       redirectTo('/login')
+    }
+    if (useUser.getState().role === 'READ_ONLY') {
+      alert('읽기 전용 게스트는 글쓰기가 불가능합니다.')
+      redirectTo('/')
     }
   }, [])
 

@@ -257,7 +257,7 @@ export function ChildCommentBox({
           <div className={'flex flex-row items-start justify-start'}>
             <Image
               src={childComment.picture}
-              alt={'profile-image'}
+              alt={'users-image'}
               width={30}
               height={30}
               className='rounded-2xl mr-4'
@@ -364,7 +364,7 @@ export function CommentBox({
           <div className={'flex flex-row items-start justify-start'}>
             <Image
               src={comment.picture}
-              alt={'profile-image'}
+              alt={'users-image'}
               width={30}
               height={30}
               className='rounded-2xl mr-4'

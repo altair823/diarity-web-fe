@@ -11,7 +11,6 @@ interface CategoryProps {
 
 export function Category({ isSmallScreen }: CategoryProps) {
   const currentPath = usePathname().split('/')[1] || 'home'
-  console.log(currentPath)
 
   return (
     <div className={isSmallScreen ? 'category-small' : 'category-large'}>

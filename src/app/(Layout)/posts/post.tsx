@@ -134,21 +134,30 @@ function CommentButtonInDetail({ commentsCount }: { commentsCount: number }) {
   )
 }
 
-export function PostSummaryBox({ post }: { post: Post }) {
+export function PostSummaryBox({
+  post,
+  contentMaxLength,
+}: {
+  post: Post
+  contentMaxLength?: number
+}) {
   const bookTitle = DOMPurify.sanitize(post.bookTitle, {
     USE_PROFILES: { html: false },
   })
   const title = DOMPurify.sanitize(post.title, { USE_PROFILES: { html: true } })
-  const content = DOMPurify.sanitize(post.content, {
+  let content = DOMPurify.sanitize(post.content, {
     USE_PROFILES: { html: true },
   })
+  if (contentMaxLength && content.length > contentMaxLength) {
+    content = content.slice(0, contentMaxLength) + '...'
+  }
   const author = DOMPurify.sanitize(post.author.displayName, {
     USE_PROFILES: { html: true },
   })
   const createdAt = new Date(post.createdAt)
   const handleAuthorClick = (event: React.MouseEvent) => {
     event.stopPropagation()
-    window.location.href = `/users/${post.author.email}`
+    window.location.href = `/users/${post.author.id}`
   }
   return (
     <div
@@ -175,7 +184,7 @@ export function PostSummaryBox({ post }: { post: Post }) {
             <p
               dangerouslySetInnerHTML={{ __html: author }}
               className={
-                'text-xs w-fit text-gray-500 cursor-pointer mr-4 hover:text-purple-500 whitespace-nowrap'
+                'text-sm w-fit cursor-pointer mr-4 hover:text-purple-500 whitespace-nowrap'
               }
               onClick={handleAuthorClick}
             />
@@ -184,8 +193,9 @@ export function PostSummaryBox({ post }: { post: Post }) {
             </p>
           </div>
         </div>
+
         <p
-          dangerouslySetInnerHTML={{ __html: bookTitle }}
+          dangerouslySetInnerHTML={{ __html: '『' + bookTitle + '』' }}
           className={'pt-4 break-words'}
         />
         <p
@@ -222,7 +232,7 @@ export function PostDetailBox({ post }: { post: Post }) {
   })
   const handleAuthorClick = (event: React.MouseEvent) => {
     event.stopPropagation()
-    window.location.href = `/users/${post.author.email}`
+    window.location.href = `/users/${post.author.id}`
   }
   const { comments, isError, isLoading } = useGetAllComments(post.id.toString())
   const [sanitizedComments, setSanitizedComments] = useState<Comment[]>([])
@@ -278,12 +288,12 @@ export function PostDetailBox({ post }: { post: Post }) {
           <p
             dangerouslySetInnerHTML={{ __html: author }}
             className={
-              'pt-4 text-xs w-fit text-gray-500 cursor-pointer hover:text-purple-500'
+              'pt-4 text-sm w-fit cursor-pointer hover:text-purple-500'
             }
             onClick={handleAuthorClick}
           />
           <p
-            dangerouslySetInnerHTML={{ __html: post.bookTitle }}
+            dangerouslySetInnerHTML={{ __html: '『' + post.bookTitle + '』' }}
             className={'pt-4 break-words font-bold'}
           />
           <p

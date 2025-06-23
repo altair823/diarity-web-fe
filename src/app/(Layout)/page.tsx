@@ -54,7 +54,7 @@ export default function Home() {
   const content = sanitizedPosts.map((post: Post) => (
     <div key={post.id}>
       <div className={'m-4'}>
-        <PostSummaryBox post={post} />
+        <PostSummaryBox post={post} contentMaxLength={400} />
       </div>
     </div>
   ))
